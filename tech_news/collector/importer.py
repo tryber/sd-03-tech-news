@@ -1,21 +1,9 @@
 import csv
-
-EXP_HEADERS = [
-    "url",
-    "title",
-    "timestamp",
-    "writer",
-    "shares_count",
-    "comments_count",
-    "summary",
-    "sources",
-    "categories",
-]
+from tech_news.collector.csv_helpers import validate_filepath, EXP_HEADERS
 
 
 def csv_importer(filepath):
-    if not filepath.endswith(".csv"):
-        raise ValueError("Formato invalido")
+    filename = validate_filepath(filepath)
     try:
         with open(filepath, "r") as file:
             data = csv.DictReader(file, delimiter=";")
@@ -26,8 +14,6 @@ def csv_importer(filepath):
             ]
 
     except FileNotFoundError:
-        print(f"############################# {filepath}")
-        filename = filepath.split("/")[-1]
         raise ValueError(f"Arquivo {filename} não encontrado")
     else:
         return info

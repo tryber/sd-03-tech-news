@@ -4,7 +4,6 @@ import time
 
 
 BASE_URL = "https://www.tecmundo.com.br/"
-BASE_URL1 = "https://www.tecmundo.com.br/mercado/207438-google-abre-processo-estagio-brasil-veja-candidatar.htm"
 
 
 def sleep(delay):
@@ -46,7 +45,13 @@ def page_new_scrape(selector, url):
 
 def scrape(fetcher, pages=1):
     news = []
-    selector = parsel.Selector(fetcher(BASE_URL1))
+    selector = parsel.Selector(
+        fetcher(
+            BASE_URL
+            + "mercado/"
+            + "207438-google-abre-processo-estagio-brasil-veja-candidatar.htm"
+        )
+    )
     for _ in range(pages):
         urls = selector.css(".tec--list__item")
         print("len de urls", len(urls), *urls, sep="\n")
