@@ -8,6 +8,8 @@ def fetch_content(url):
         time.sleep(0.5)
     except requests.HTTPError:
         return ""
+    except requests.ReadTimeout:
+        return ""
     else:
         return response.text
 
