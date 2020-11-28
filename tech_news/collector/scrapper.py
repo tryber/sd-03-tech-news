@@ -23,20 +23,21 @@ def fetch_content(url, timeout=3, delay=0.5):
 
 def page_new_scrape(selector, url):
     title = selector.css("h1.tec--article__header__title::text").get()
-    timestamp = selector.css("time#js-article-date *::text").get()
+    timestamp = selector.css("time#js-article-date::attr(datetime)").get()
     writer = selector.css("a.tec--author__info__link::text").get()
-    shares_count = selector.css("div.tec--toolbar__item::text").get()
-    comments_count = selector.css("button#js-comments-btn::text").get()
+    shares_count = selector.css(".tec--toolbar__item::text").re_first(r"\d+")
+    comments_count = selector.css("#js-comments-btn::text").re_first(r"\d+")
     summary = selector.css("div.tec--article__body > p::text").get()
     sources = selector.css("div.z--mb-16 .tec--badge::text").getall()
     categories = selector.css("#js-categories a::text").getall()
+
     return {
         "url": url,
         "title": title,
         "timestamp": timestamp,
         "writer": writer,
-        "shares_count": shares_count,
-        "comments_count": comments_count,
+        "shares_count": int(shares_count),
+        "comments_count": int(comments_count),
         "summary": summary,
         "sources": sources,
         "categories": categories,
@@ -45,16 +46,11 @@ def page_new_scrape(selector, url):
 
 def scrape(fetcher, pages=1):
     news = []
-    selector = parsel.Selector(
-        fetcher(
-            BASE_URL
-            + "mercado/"
-            + "207438-google-abre-processo-estagio-brasil-veja-candidatar.htm"
-        )
-    )
+    selector = parsel.Selector(fetcher(BASE_URL + "novidades/"))
     for _ in range(pages):
-        urls = selector.css(".tec--list__item")
-        print("len de urls", len(urls), *urls, sep="\n")
+        urls = selector.css(
+            ".tec--list__item .tec--card__title__link::attr(href)"
+        ).getall()
         for url in urls:
             new_selector = parsel.Selector(fetcher(url))
             news.append(page_new_scrape(new_selector, url))
