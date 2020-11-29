@@ -10,7 +10,7 @@ def csv_importer(filepath):
             content = csv.DictReader(file, delimiter=';', )
             table = [value for value in content]
             return table
-    except ValueError:
+    except (ValueError, FileNotFoundError):
         file_name = filepath.split('/')[1]
         raise ValueError(
             f'Formato invalido : Arquivo {file_name} não encontrado')
