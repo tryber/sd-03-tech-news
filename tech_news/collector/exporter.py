@@ -34,7 +34,7 @@ def csv_exporter(filepath):
             data = get_db_data()
             print(data)
             csv_translate(data, file)
-    except:
+    except ValueError:
         raise ValueError('Formato invalido')
 
 

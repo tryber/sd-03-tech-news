@@ -1,7 +1,6 @@
 import requests
 import time
 import parsel
-import re
 
 BASE_URL = 'https://www.tecmundo.com.br/novidades'
 
@@ -31,7 +30,7 @@ css_selectors = {
     'summary': '.tec--article__body > p:nth-child(1) *::text',
     'sources': 'div.z--mb-16.z--px-16 > div > a ::text',
     'categories': '#js-categories > .tec--badge--primary ::text',
-    'url': '#js-main > div.z--pt-40.z--pb-40.z--mt-40.tec--article__footer > div > div.z--row > div:nth-child(1) > article > div > h3 > a::attr(href)'
+    'url': '.tec--article__footer a.tec--card__title__link::attr(href)'
 }
 
 
