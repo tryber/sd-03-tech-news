@@ -32,14 +32,18 @@ css_selectors = {
 
 
 def get_info_by_key(info, selector):
-    if info in ['categories', 'sources', 'summary', 'writer', 'comments_count', 'shared_count']:
+    if info in ['categories',
+                'sources', 'summary',
+                'writer',
+                'comments_count',
+                'shared_count']:
         return selector.css(css_selectors[info]).getall()
     return selector.css(css_selectors[info]).get()
 
 
 def clear_data(data):
     data['summary'] = ''.join(data['summary'])
-    data['shared_count'] = re.findall("\d+", data['shared_count'][0])
+    data['shared_count'] = re.findall(r"\d+", data['shared_count'][0])
 
     data['writer'] = data['writer'][0]
     return data
