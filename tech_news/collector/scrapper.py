@@ -5,11 +5,15 @@ import time
 BASE_URL = "https://www.tecmundo.com.br/"
 
 
-def fetch_content(url, timeout=3, delay=0.5):
+def sleep(delay):
     time.sleep(delay)
+
+
+def fetch_content(url, timeout=3, delay=0.5):
+    sleep(delay)
     try:
         response = requests.get(url, timeout=timeout)
-    except (response.HTTPError, response.ReadTimeout):
+    except (requests.HTTPError, requests.ReadTimeout):
         return ""
     else:
         return response.text
@@ -17,4 +21,3 @@ def fetch_content(url, timeout=3, delay=0.5):
 
 def scrape(fetcher, pages=1):
     return ""
-
