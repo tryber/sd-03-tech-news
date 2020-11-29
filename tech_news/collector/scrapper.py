@@ -47,20 +47,14 @@ def get_info_by_key(info, selector):
 
 def clear_data(data):
     data['summary'] = ''.join(data['summary'])
-    try:
-        data['shares_count'] = [
-            int(i) for i in data['shares_count'].split() if i.isdigit()][0]
-    except:
-        data['shares_count'] = 0
-    try:
-        data['comments_count'] = [
-            int(i) for i in data['comments_count'].split() if i.isdigit()][0]
-    except:
-        data['comments_count'] = 0
-    try:
-        data['writer'] = data['writer']
-    except:
-        pass
+
+    data['shares_count'] = [
+        int(i) for i in data['shares_count'].split() if i.isdigit()][0]
+
+    data['comments_count'] = [
+        int(i) for i in data['comments_count'][1].split() if i.isdigit()][0]
+
+    data['writer'] = data['writer']
 
     return data
 
