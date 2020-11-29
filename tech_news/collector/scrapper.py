@@ -1,5 +1,5 @@
 import requests
-""" import time """
+import time
 import parsel
 import re
 
@@ -8,44 +8,60 @@ BASE_URL = 'https://www.tecmundo.com.br/novidades'
 headers = {'Content-Type': 'text/html; charset=utf-8'}
 
 
-def fetch_content(url, timeout=3, delay=0.5):
+def sleep(s):
+    return time.sleep(s)
+
+
+def fetch_content(url, timeout=3):
     """Seu código deve vir aqui"""
-    response = requests.get(url, timeout=3, headers=headers)
-    if response.status_code != 200:
+    try:
+        response = requests.get(url, timeout=timeout, headers=headers)
+    except requests.exceptions.Timeout:
         return ''
-    # time.sleep(6)
+    sleep(0.5)
     return response.text
 
 
 css_selectors = {
     'title': '.tec--article__header__title::text',
-    'timestamp': '#js-article-date > strong::text',
-    'writer': '.tec--timestamp__item *::text',
-    'shared_count': 'div.tec--toolbar__item *::text',
-    'comments_count': '#js-comments-btn *::text',
+    'timestamp': '#js-article-date ::attr(datetime)',
+    'writer': '.tec--author__info__link *::text',
+    'shares_count': '.tec--toolbar__item *::text',
+    'comments_count': '#js-comments-btn ::text',
     'summary': '.tec--article__body > p:nth-child(1) *::text',
     'sources': 'div.z--mb-16.z--px-16 > div > a ::text',
-    'categories': '.tec--badge::text',
-    'next_btn': '.tec--btn ::attr(href)',
-    'article_url': '.tec--list__item .tec--card__title__link::attr(href)'
+    'categories': '#js-categories > .tec--badge--primary ::text',
+    'url': '#js-main > div.z--pt-40.z--pb-40.z--mt-40.tec--article__footer > div > div.z--row > div:nth-child(1) > article > div > h3 > a::attr(href)'
 }
 
 
 def get_info_by_key(info, selector):
     if info in ['categories',
-                'sources', 'summary',
-                'writer',
+                'sources',
+                'summary',
                 'comments_count',
-                'shared_count']:
+                ]:
         return selector.css(css_selectors[info]).getall()
     return selector.css(css_selectors[info]).get()
 
 
 def clear_data(data):
     data['summary'] = ''.join(data['summary'])
-    data['shared_count'] = re.findall(r"\d+", data['shared_count'][0])
+    try:
+        data['shares_count'] = [
+            int(i) for i in data['shares_count'].split() if i.isdigit()][0]
+    except:
+        data['shares_count'] = 0
+    try:
+        data['comments_count'] = [
+            int(i) for i in data['comments_count'].split() if i.isdigit()][0]
+    except:
+        data['comments_count'] = 0
+    try:
+        data['writer'] = data['writer']
+    except:
+        pass
 
-    data['writer'] = data['writer'][0]
     return data
 
 
@@ -62,7 +78,7 @@ def scrape(fetcher, pages=1):
     articles_data = []
     main_page_selector = parsel.Selector(page)
     articles_url = main_page_selector.css(
-        css_selectors['article_url']).getall()
+        '.tec--list__item .tec--card__title__link::attr(href)').getall()
     while count < pages:
         for article in articles_url:
             selector = get_article_page_selector(article, fetcher)
@@ -70,11 +86,8 @@ def scrape(fetcher, pages=1):
                      for key in css_selectors}
             clean_data = clear_data(infos)
             articles_data.append(clean_data)
-        next_page_url = main_page_selector.css(css_selectors['next_btn']).get()
+        next_page_url = main_page_selector.css('.tec--btn ::attr(href)').get()
         page = fetcher(next_page_url)
         count += 1
 
-    return print(len(articles_data))
-
-
-scrape(fetch_content, 2)
+    return articles_data
