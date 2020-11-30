@@ -8,8 +8,6 @@ db = client.tech_news
 
 
 def csv_exporter(filepath):
-    if not filepath.endswith(".csv"):
-        raise ValueError("Formato invalido")
     with open(filepath, "w") as file:
         writeCsv = csv.writer(file, delimiter=";")
         headers = [
@@ -32,8 +30,8 @@ def csv_exporter(filepath):
             shares_count = document["shares_count"]
             comments_count = document["comments_count"]
             summary = document["summary"]
-            sources = "".join(document["sources"])
-            categories = ",".join(document["categories"])
+            sources = ''.join(document["sources"])
+            categories = ','.join(document["categories"])
             writeCsv.writerow(
                 [
                     url,
