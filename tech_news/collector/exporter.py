@@ -1,17 +1,15 @@
 import csv
-from pymongo import MongoClient
+from tech_news.database import find_news
 from tech_news.collector.csv_helpers import validate_filepath, EXP_HEADERS
 
 
 def csv_exporter(filepath):
     validate_filepath(filepath)
-    client = MongoClient()
-    collection = client.tech_news.news
 
     with open(filepath, "w") as file:
         writer = csv.writer(file, delimiter=";")
         writer.writerow(EXP_HEADERS)
-        for document in collection.find():
+        for document in find_news():
             dict = [
                 document["url"],
                 document["title"],
@@ -24,13 +22,3 @@ def csv_exporter(filepath):
                 ",".join(document["categories"]),
             ]
             writer.writerow(dict)
-
-    # "url",
-    # "title",
-    # "timestamp",
-    # "writer",
-    # "shares_count",
-    # "comments_count",
-    # "summary",
-    # "sources",
-    # "categories",
