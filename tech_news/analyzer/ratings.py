@@ -8,7 +8,6 @@ client = MongoClient(host=DB_HOST, port=int(DB_PORT))
 
 
 def top_5_news():
-    """Seu código deve vir aqui"""
     rated = []
     with client as session:
         db = session.tech_news
@@ -23,7 +22,6 @@ def top_5_news():
 
 
 def top_5_categories():
-    """Seu código deve vir aqui"""
     with client as session:
         db = session.tech_news
         docs = db.news.aggregate([
