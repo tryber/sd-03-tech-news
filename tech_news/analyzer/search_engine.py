@@ -1,5 +1,19 @@
+from pymongo import MongoClient
+import csv
+
+client = MongoClient()
+db = client.tech_news
+
+
 def search_by_title(title):
-    """Seu código deve vir aqui"""
+    arr = []
+    for document in db.news.find(
+        {"title": {"$regex": title, "$options": "-i"}}
+    ):
+        title = document["title"]
+        url = document["url"]
+        arr.append((title, url))
+    return arr
 
 
 def search_by_date(date):

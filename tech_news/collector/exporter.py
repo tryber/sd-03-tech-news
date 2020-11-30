@@ -1,9 +1,8 @@
 from pymongo import MongoClient
 import csv
+from decouple import config
 
-client = MongoClient(
-    "mongodb://root:root@localhost:27017/?authMechanism=DEFAULT"
-)
+client = MongoClient()
 db = client.tech_news
 
 
