@@ -44,4 +44,4 @@ def csv_importer(filepath):
         return arr
 
 
-print(csv_importer('correct.csv'))
+print(csv_importer('correct.cv'))
