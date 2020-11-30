@@ -2,6 +2,10 @@ import requests
 import time
 
 
+def sleep(delay):
+    time.sleep(delay)
+
+
 def fetch_content(url, timeout=3, delay=0.5):
     try:
         response = requests.get(url, timeout=timeout)
