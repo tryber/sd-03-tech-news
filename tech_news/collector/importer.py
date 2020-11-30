@@ -1,20 +1,20 @@
 # import csv
 
-baseArr = [
-    "categories",
-    "comments_count",
-    "shares_count",
-    "sources",
-    "summary",
-    "timestamp",
-    "title",
-    "url",
-    "writer",
-]
+# baseArr = [
+#     "categories",
+#     "comments_count",
+#     "shares_count",
+#     "sources",
+#     "summary",
+#     "timestamp",
+#     "title",
+#     "url",
+#     "writer",
+# ]
 
-arr = []
-new_source = []
-new_category = []
+# arr = []
+# new_source = []
+# new_category = []
 
 
 # def csv_importer(filepath):
@@ -48,3 +48,7 @@ new_category = []
 
 
 # print(csv_importer('correct.csv'))
+
+
+def csv_importer(filepath):
+    """Seu código deve vir aqui"""
