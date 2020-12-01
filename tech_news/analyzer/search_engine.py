@@ -33,8 +33,22 @@ def search_by_date(date):
 
 
 def search_by_source(source):
-    """Seu código deve vir aqui"""
+    arr = []
+    for document in db.news.find(
+        {"sources": {"$elemMatch": {'$regex': source, "$options": "i"}}}
+    ):
+        title = document["title"]
+        url = document["url"]
+        arr.append((title, url))
+    return arr
 
 
 def search_by_category(category):
-    """Seu código deve vir aqui"""
+    arr = []
+    for document in db.news.find(
+        {"categories": {"$elemMatch": {'$regex': category, "$options": "i"}}}
+    ):
+        title = document["title"]
+        url = document["url"]
+        arr.append((title, url))
+    return arr
