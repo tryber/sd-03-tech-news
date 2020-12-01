@@ -1,5 +1,3 @@
-from pymongo import MongoClient
-from decouple import config
 from tech_news.database import db
 import csv
 
