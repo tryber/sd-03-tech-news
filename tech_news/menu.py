@@ -31,6 +31,45 @@ def collector_menu():
         print("Opção inválida", file=sys.stderr)
 
 
+def search_by_title():
+    input("Digite o título:")
+
+
+def search_by_date():
+    input("Digite a data no formato aaaa-mm-dd:")
+
+
+def search_by_source():
+    input("Digite a fonte:")
+
+
+def search_by_category():
+    input("Digite a categoria:")
+
+
+def search_top_news():
+    print("teste")
+
+
+def search_top_categories():
+    print("teste")
+
+
+def exit():
+    print("Encerrando script\n")
+
+
+options = {
+    "1": search_by_title,
+    "2": search_by_date,
+    "3": search_by_source,
+    "4": search_by_category,
+    "5": search_top_news,
+    "6": search_top_categories,
+    "7": exit,
+}
+
+
 def analyzer_menu():
     selection = input(
         "Selecione uma das opções a seguir:\n "
@@ -42,19 +81,10 @@ def analyzer_menu():
         "6 - Listar top 5 categorias;\n "
         "7 - Sair."
     )
-    if selection == '1':
-        input("Digite o título:")
-    if selection == '2':
-        input("Digite a data no formato aaaa-mm-dd:")
-    if selection == '3':
-        input("Digite a fonte:")
-    if selection == '4':
-        input("Digite a categoria:")
-    if selection == '5':
-        input("Digite o título:")
-    if selection == '6':
-        input("Digite o título:")
-    if selection == '7':
-        print("Encerrando script\n")
-    else:
+    try:
+        options[selection]()
+    except KeyError:
         print("Opção inválida", file=sys.stderr)
+
+
+analyzer_menu()
