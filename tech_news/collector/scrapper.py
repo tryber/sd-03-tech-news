@@ -13,7 +13,8 @@ def fetch_content(url, timeout=3, delay=0.5):
     sleep(delay)
     try:
         response = requests.get(url, timeout=timeout)
-        response.raise_for_status()
+        if response.status_code != 200:
+            return ""
     except (requests.HTTPError, requests.ReadTimeout):
         return ""
     else:
@@ -55,3 +56,36 @@ def scrape(fetcher, pages=1):
             news_page.append(extract_news_page(new_selector, url))
     return news_page
 
+
+# print("""             ;               ,              """)
+# print("""           ,;                 '.            """)
+# print("""          ;:                   :;           """)
+# print("""         ::                     ::          """)
+# print("""         ::                     ::          """)
+# print("""         ':                     :           """)
+# print("""          :.                    :           """)
+# print("""       ;' ::                   ::  '        """)
+# print("""      .'  ';                   ;'  '.       """)
+# print("""     ::    :;                 ;:    ::      """)
+# print("""     ;      :;.             ,;:     ::      """)
+# print("""     :;      :;:           ,;"      ::      """)
+# print("""     ::.      ':;  ..,.;  ;:'     ,.;:      """)
+# print("""      "'"...   '::,::::: ;:   .;.;""'       """)
+# print("""          '""'....;:::::;, ;.;'""           """)
+# print("""      .:::.....'"':::::::'",...;::::;.      """)
+# print("""     ;:' '""'"";.,;:::::;.'""""""  ':;      """)
+# print("""    ::'         ;::;:::;::..         :;     """)
+# print("""   ::         ,;:::::::::::;:..       ::    """)
+# print("""   ;'     ,;;:;::::::::::::::;";..    ':.   """)
+# print("""  ::     ;:"  ::::        ::::  ":     ::   """)
+# print("""   :.    ::   :::::::  :::::::   :     ;    """)
+# print("""    ;    ::   :::::::  :::::::   :    ;     """)
+# print("""     '   ::   :::::::..::::::'  ,:   '      """)
+# print("""      '  ::    :::::::::::::"   ::          """)
+# print("""         ::     ':::::::::"'    ::          """)
+# print("""         ':       """""""'      ::          """)
+# print("""          ::                   ;:           """)
+# print("""          ':;                 ;:"           """)
+# print("""            ';              ,;'             """)
+# print("""              "'           '"               """)
+# print("""                '                           """)
