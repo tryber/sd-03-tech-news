@@ -1,10 +1,6 @@
 import requests
-import time
+from time import sleep
 from parsel import Selector
-
-
-def sleep(delay):
-    time.sleep(delay)
 
 
 def fetch_content(url, timeout=3, delay=0.5):
@@ -16,12 +12,6 @@ def fetch_content(url, timeout=3, delay=0.5):
         return ""
     else:
         return response.text
-
-
-def get_url(fetcher):
-    selector = Selector(fetcher)
-    page = selector.css(
-        ".tec--list__item .tec--card__title__link::attr(href)")
 
 
 def scrape(fetcher, pages=1):
