@@ -11,9 +11,8 @@ def search_by_title(title):
 
 
 def search_by_date(date):
-    # regexp: https://stackoverflow.com/questions/22061723/regex-date-validation-for-yyyy-mm-dd
     reg_exp = bool(
-        re.match("^\d{4}\-(0[1-9]|1[012])\-(0[1-9]|[12][0-9]|3[01])$", date)
+        re.match("^\\d{4}\\-(0[1-9]|1[012])\\-(0[1-9]|[12][0-9]|3[01])$", date)
     )
 
     if reg_exp is False:

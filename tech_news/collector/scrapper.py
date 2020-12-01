@@ -1,6 +1,5 @@
 import requests
 import time
-import re
 from parsel import Selector
 
 
@@ -39,7 +38,7 @@ def scrape(fetcher, pages=1):
                     ).get(),
                     "shares_count": selector.css(
                         ".tec--toolbar__item::text"
-                    ).re_first("\d+") or 0,
+                    ).re_first("\\d+") or 0,
                     "comments_count": selector.css(
                         "button::attr(data-count)"
                     ).get() or 0,
