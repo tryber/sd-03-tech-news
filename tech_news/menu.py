@@ -95,6 +95,3 @@ def analyzer_menu():
         options[selection]()
     except KeyError:
         print("Opção inválida", file=sys.stderr)
-
-
-analyzer_menu()
