@@ -1,13 +1,9 @@
 import requests
 import parsel
-import time
+from time import sleep
 
 
 BASE_URL = "https://www.tecmundo.com.br/"
-
-
-def sleep(delay):
-    time.sleep(delay)
 
 
 def fetch_content(url, timeout=3, delay=0.5):
@@ -21,7 +17,8 @@ def fetch_content(url, timeout=3, delay=0.5):
         return response.text
 
 
-def page_new_scrape(selector, url):
+def page_new_scrape(url, fetcher):
+    selector = parsel.Selector(fetcher(url))
     title = selector.css("h1.tec--article__header__title::text").get()
     timestamp = selector.css("time#js-article-date::attr(datetime)").get()
     writer = selector.css("a.tec--author__info__link::text").get()
@@ -30,14 +27,14 @@ def page_new_scrape(selector, url):
     summary = selector.css("div.tec--article__body > p::text").get()
     sources = selector.css("div.z--mb-16 .tec--badge::text").getall()
     categories = selector.css("#js-categories a::text").getall()
-
+    print(url)
     return {
         "url": url,
         "title": title,
         "timestamp": timestamp,
         "writer": writer,
-        "shares_count": int(shares_count),
-        "comments_count": int(comments_count),
+        "shares_count": int(shares_count or "0"),
+        "comments_count": int(comments_count or "0"),
         "summary": summary,
         "sources": sources,
         "categories": categories,
@@ -46,13 +43,17 @@ def page_new_scrape(selector, url):
 
 def scrape(fetcher, pages=1):
     news = []
-    selector = parsel.Selector(fetcher(BASE_URL + "novidades/"))
+    url = BASE_URL + "novidades/"
     for _ in range(pages):
-        urls = selector.css(
+        print("here", _, url)
+        if not url:
+            break
+        selector = parsel.Selector(fetcher(url))
+        news_urls = selector.css(
             ".tec--list__item .tec--card__title__link::attr(href)"
         ).getall()
-        for url in urls:
-            new_selector = parsel.Selector(fetcher(url))
-            news.append(page_new_scrape(new_selector, url))
-
+        news.extend(
+            [page_new_scrape(news_url, fetcher) for news_url in news_urls]
+        )
+        url = selector.css(".tec--btn::attr(href)").get()
     return news
