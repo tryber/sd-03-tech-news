@@ -1,55 +1,39 @@
 import re
-from tech_news.database import db
+from datetime import datetime
+from tech_news.database import get_collection
 
 
 def search_by_title(title):
-    """Seu código deve vir aqui"""
-    arr = []
-    for document in db.news.find(
-        {"title": {"$regex": title, "$options": "-i"}}
-    ):
-        title = document["title"]
-        url = document["url"]
-        arr.append((title, url))
-    return arr
+    results = get_collection().find(
+        {"title": {"$regex": re.compile(title, re.IGNORECASE)}},
+        {"title": True, "_id": False, "url": True},
+    )
+    return [(result["title"], result["url"]) for result in results]
 
 
 def search_by_date(date):
-    """Seu código deve vir aqui"""
-    match = re.search(
-        "^\d{4}\-(0?[1-9]|1[012])\-(0?[1-9]|[12][0-9]|3[01])$", date
-    )
-    if not match:
+    try:
+        datetime.strptime(date, "%Y-%m-%d")
+    except ValueError:
         raise ValueError("Data inválida")
-    arr = []
-    for document in db.news.aggregate(
-        [{"$match": {"timestamp": {"$regex": date}}}]
-    ):
-        title = document["title"]
-        url = document["url"]
-        arr.append((title, url))
-    return arr
+    results = get_collection().find(
+        {"timestamp": {"$regex": re.compile(date)}},
+        {"title": True, "_id": False, "url": True},
+    )
+    return [(result["title"], result["url"]) for result in results]
 
 
 def search_by_source(source):
-    """Seu código deve vir aqui"""
-    arr = []
-    for document in db.news.find(
-        {"sources": {"$elemMatch": {'$regex': source, "$options": "i"}}}
-    ):
-        title = document["title"]
-        url = document["url"]
-        arr.append((title, url))
-    return arr
+    results = get_collection().find(
+        {"sources": {"$regex": re.compile(source, re.IGNORECASE)}},
+        {"title": True, "_id": False, "url": True},
+    )
+    return [(result["title"], result["url"]) for result in results]
 
 
 def search_by_category(category):
-    """Seu código deve vir aqui"""
-    arr = []
-    for document in db.news.find(
-        {"categories": {"$elemMatch": {'$regex': category, "$options": "i"}}}
-    ):
-        title = document["title"]
-        url = document["url"]
-        arr.append((title, url))
-    return arr
+    results = get_collection().find(
+        {"categories": {"$regex": re.compile(category, re.IGNORECASE)}},
+        {"title": True, "_id": False, "url": True},
+    )
+    return [(result["title"], result["url"]) for result in results]

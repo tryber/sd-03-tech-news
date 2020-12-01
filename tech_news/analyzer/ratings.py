@@ -1,48 +1,31 @@
-from tech_news.database import db
+from tech_news.database import get_collection
 
 
 def top_5_news():
-    """Seu código deve vir aqui"""
-    arr = []
-    for element in db.news.aggregate(
+    top_5 = get_collection().aggregate(
         [
             {
                 "$addFields": {
-                    "total": {"$add": ["$shares_count", "$comments_count"]}
+                    "total_shares_and_comments": {
+                        "$sum": ["$shares_count", "$comments_count"]
+                    }
                 },
             },
-            {
-                "$sort": {"total": -1, "title": 1},
-            },
-            {
-                "$limit": 5,
-            },
+            {"$sort": {"total_shares_and_comments": -1, "title": 1}},
+            {"$limit": 5},
+            {"$project": {"_id": False, "title": True, "url": True}},
         ]
-    ):
-        title = element["title"]
-        url = element["url"]
-        arr.append((title, url))
-    return arr
+    )
+    return [(category["title"], category["url"]) for category in top_5]
 
 
 def top_5_categories():
-    """Seu código deve vir aqui"""
-    arr = []
-    for element in db.news.aggregate(
+    top_5 = get_collection().aggregate(
         [
-            {
-                "$unwind": "$categories",
-            },
-            {
-                "$group": {
-                    "_id": "$categories",
-                    "count": {"$sum": 1},
-                }
-            },
-            {"$sort": {"count": -1, "_id": 1}},
+            {"$unwind": "$categories"},
+            {"$group": {"_id": "$categories", "quantity": {"$sum": 1}}},
+            {"$sort": {"quantity": -1, "_id": 1}},
             {"$limit": 5},
         ]
-    ):
-        category = element["_id"]
-        arr.append(category)
-    return arr
+    )
+    return [category["_id"] for category in top_5]

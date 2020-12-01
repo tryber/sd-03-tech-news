@@ -1,61 +1,22 @@
 import csv
-
-expected_header = [
-    "categories",
-    "comments_count",
-    "shares_count",
-    "sources",
-    "summary",
-    "timestamp",
-    "title",
-    "url",
-    "writer",
-]
-
-
-def append_arr(arr, result):
-    header, *data = result
-    header.sort()
-    if header != expected_header:
-        raise ValueError("Formato invalido aqui")
-    for row in data:
-        (
-            url,
-            title,
-            timestamp,
-            writer,
-            shares_count,
-            comments_count,
-            summary,
-            sources,
-            categories,
-        ) = row
-
-        arr.append(
-            {
-                "url": url,
-                "title": title,
-                "timestamp": timestamp,
-                "writer": writer,
-                "shares_count": shares_count,
-                "comments_count": comments_count,
-                "summary": summary,
-                "sources": sources,
-                "categories": categories,
-            }
-        )
+from tech_news.collector.csv_helpers import validate_filepath, EXP_HEADERS
 
 
 def csv_importer(filepath):
-    """Seu código deve vir aqui"""
-    arr = []
+    filename = validate_filepath(filepath)
     try:
-        if not filepath.endswith(".csv"):
-            raise ValueError("Formato invalido")
-        with open(filepath) as file:
-            result = csv.reader(file, delimiter=";", quotechar='"')
-            append_arr(arr, result)
+        with open(filepath, "r") as file:
+            data = csv.DictReader(file, delimiter=";")
+            if data.fieldnames != EXP_HEADERS:
+                raise ValueError("Headers invalidos")
+            info = [
+                {key: value for key, value in line.items()} for line in data
+            ]
+
     except FileNotFoundError:
-        raise ValueError("Arquivo file_not_exist.csv não encontrado")
+        raise ValueError(f"Arquivo {filename} não encontrado")
     else:
-        return arr
+        return info
+
+
+csv_importer("correct.csv")

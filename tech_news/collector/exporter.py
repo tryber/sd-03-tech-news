@@ -1,45 +1,24 @@
-from tech_news.database import db
 import csv
+from tech_news.database import find_news
+from tech_news.collector.csv_helpers import validate_filepath, EXP_HEADERS
 
 
 def csv_exporter(filepath):
-    """Seu código deve vir aqui"""
-    if not filepath.endswith(".csv"):
-        raise ValueError("Formato invalido")
+    validate_filepath(filepath)
+
     with open(filepath, "w") as file:
-        write_csv = csv.writer(file, delimiter=";")
-        headers = [
-            "url",
-            "title",
-            "timestamp",
-            "writer",
-            "shares_count",
-            "comments_count",
-            "summary",
-            "sources",
-            "categories",
-        ]
-        write_csv.writerow(headers)
-        for document in db.news.find({}):
-            url = document["url"]
-            title = document["title"]
-            timestamp = document["timestamp"]
-            writer = document["writer"]
-            shares_count = document["shares_count"]
-            comments_count = document["comments_count"]
-            summary = document["summary"]
-            sources = "".join(document["sources"])
-            categories = ",".join(document["categories"])
-            write_csv.writerow(
-                [
-                    url,
-                    title,
-                    timestamp,
-                    writer,
-                    shares_count,
-                    comments_count,
-                    summary,
-                    sources,
-                    categories,
-                ]
-            )
+        writer = csv.writer(file, delimiter=";")
+        writer.writerow(EXP_HEADERS)
+        for document in find_news():
+            dict = [
+                document["url"],
+                document["title"],
+                document["timestamp"],
+                document["writer"],
+                str(document["shares_count"]),
+                str(document["comments_count"]),
+                document["summary"],
+                ",".join(document["sources"]),
+                ",".join(document["categories"]),
+            ]
+            writer.writerow(dict)

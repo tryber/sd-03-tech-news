@@ -1,63 +1,59 @@
 import requests
+import parsel
 from time import sleep
-from parsel import Selector
+
+
+BASE_URL = "https://www.tecmundo.com.br/"
 
 
 def fetch_content(url, timeout=3, delay=0.5):
-    """Seu código deve vir aqui"""
+    sleep(delay)
     try:
         response = requests.get(url, timeout=timeout)
-        sleep(delay)
-    except requests.ReadTimeout:
+        response.raise_for_status()
+    except (requests.ReadTimeout, requests.HTTPError):
         return ""
     else:
-        if response.status_code != 200:
-            return ""
-        else:
-            return response.text
+        return response.text
 
 
-def appendArr(infos, link, arr):
-    title = infos.css(".tec--article__header__title::text").get()
-    timestamp = infos.css(".tec--timestamp__item time::attr(datetime)").get()
-    writer = infos.css(".tec--author__info__link::text").get()
-    shares_count = infos.css(".tec--toolbar__item::text").get()
-    try:
-        suffix = " Compartilharam"
-        if shares_count.endswith(suffix):
-            shares_count = shares_count[: -len(suffix)]
-    except AttributeError:
-        shares_count = 0
-    comments_count = infos.css(".tec--btn::attr(data-count)").get()
-    summary = infos.css(".tec--article__body *::text").get()
-    sources = infos.css(".z--mb-16 .tec--badge::text").getall()
-    categories = infos.css(".tec--badge--primary::text").getall()
-    arr.append(
-        {
-            "url": link,
-            "title": title,
-            "timestamp": timestamp,
-            "writer": writer,
-            "shares_count": int(shares_count),
-            "comments_count": int(comments_count),
-            "summary": summary,
-            "sources": sources,
-            "categories": categories,
-        }
-    )
+def page_new_scrape(url, fetcher):
+    selector = parsel.Selector(fetcher(url))
+    title = selector.css("h1.tec--article__header__title::text").get()
+    timestamp = selector.css("time#js-article-date::attr(datetime)").get()
+    writer = selector.css("a.tec--author__info__link::text").get()
+    shares_count = selector.css(".tec--toolbar__item::text").re_first(r"\d+")
+    comments_count = selector.css("#js-comments-btn::text").re_first(r"\d+")
+    summary = selector.css("div.tec--article__body > p::text").get()
+    sources = selector.css("div.z--mb-16 .tec--badge::text").getall()
+    categories = selector.css("#js-categories a::text").getall()
+    print(url)
+    return {
+        "url": url,
+        "title": title,
+        "timestamp": timestamp,
+        "writer": writer,
+        "shares_count": int(shares_count or "0"),
+        "comments_count": int(comments_count or "0"),
+        "summary": summary,
+        "sources": sources,
+        "categories": categories,
+    }
 
 
-def scrape(fetcher=fetch_content, pages=1):
-    """Seu código deve vir aqui"""
-    arr = []
-    for i in range(pages):
-        page = fetcher(f"https://www.tecmundo.com.br/novidades?page={i}")
-        selector = Selector(text=page)
-        links = selector.css(
+def scrape(fetcher, pages=1):
+    news = []
+    url = BASE_URL + "novidades/"
+    for _ in range(pages):
+        print("here", _, url)
+        if not url:
+            break
+        selector = parsel.Selector(fetcher(url))
+        news_urls = selector.css(
             ".tec--list__item .tec--card__title__link::attr(href)"
         ).getall()
-        for link in links:
-            second_response = fetcher(link)
-            infos = Selector(text=second_response)
-            appendArr(infos, link, arr)
-    return arr
+        news.extend(
+            [page_new_scrape(news_url, fetcher) for news_url in news_urls]
+        )
+        url = selector.css(".tec--btn::attr(href)").get()
+    return news
