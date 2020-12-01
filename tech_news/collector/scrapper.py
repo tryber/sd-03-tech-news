@@ -1,10 +1,6 @@
 import requests
-import time
+from time import sleep
 from parsel import Selector
-
-
-def sleep(delay):
-    time.sleep(delay)
 
 
 def fetch_content(url, timeout=3, delay=0.5):
@@ -62,5 +58,4 @@ def scrape(fetcher=fetch_content, pages=1):
             second_response = fetcher(link)
             infos = Selector(text=second_response)
             appendArr(infos, link, arr)
-    print(len(arr))
     return arr

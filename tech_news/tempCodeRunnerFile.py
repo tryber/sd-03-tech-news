@@ -3,7 +3,6 @@ from tech_news.collector.importer import csv_importer
 from tech_news.collector.scrapper import scrape
 from tech_news.collector.scrapper import fetch_content
 from tech_news.database import create_news
-import sys
 
 
 def collector_menu():
@@ -23,12 +22,11 @@ def collector_menu():
         csv_exporter(file)
     elif selection == "3":
         n = input("Digite a quantidade de páginas a serem raspadas:")
-        data = scrape(fetcher=fetch_content, pages=int(n))
-        create_news(data)
+        scrape(fetch_content, int(n))
     elif selection == "4":
         print("Encerrando script\n")
     else:
-        print("Opção inválida", file=sys.stderr)
+        raise ValueError("Opção inválida\n")
 
 
 collector_menu()

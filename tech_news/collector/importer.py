@@ -19,8 +19,18 @@ def appendArr(arr, result):
     if header != baseArr:
         raise ValueError("Formato invalido aqui")
     for row in data:
-        url, title, timestamp, writer, shares_count, *second_half = row
-        comments_count, summary, sources, categories = second_half
+        (
+            url,
+            title,
+            timestamp,
+            writer,
+            shares_count,
+            comments_count,
+            summary,
+            sources,
+            categories,
+        ) = row
+
         arr.append(
             {
                 "url": url,
@@ -48,6 +58,3 @@ def csv_importer(filepath):
         raise ValueError("Arquivo file_not_exist.csv não encontrado")
     else:
         return arr
-
-
-print(csv_importer("correct.csv"))

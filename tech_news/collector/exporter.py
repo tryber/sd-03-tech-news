@@ -49,6 +49,3 @@ def csv_exporter(filepath):
                     categories,
                 ]
             )
-
-
-csv_exporter("news.csv")
