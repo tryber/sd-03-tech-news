@@ -1,5 +1,8 @@
+from tech_news.database import test
+
+
 def search_by_title(title):
-    """Seu código deve vir aqui"""
+    test(title)
 
 
 def search_by_date(date):

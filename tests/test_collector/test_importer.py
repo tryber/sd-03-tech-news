@@ -3,6 +3,7 @@
 import pytest
 from tech_news.collector.importer import csv_importer
 
+
 DICT = [
     dict(
         [
