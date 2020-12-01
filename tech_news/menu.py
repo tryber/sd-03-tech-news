@@ -14,8 +14,8 @@ next_step = {
 
 module_to_use = {
     '1': lambda path: csv_importer(path),
-    '2': lambda path: csv_exporter(),
-    '3': lambda: scrape()
+    '2': lambda path: csv_exporter(path),
+    '3': lambda path: scrape(path)
 }
 
 
