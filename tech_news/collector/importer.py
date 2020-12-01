@@ -1,6 +1,6 @@
 import csv
 
-baseArr = [
+expected_header = [
     "categories",
     "comments_count",
     "shares_count",
@@ -13,10 +13,10 @@ baseArr = [
 ]
 
 
-def appendArr(arr, result):
+def append_arr(arr, result):
     header, *data = result
     header.sort()
-    if header != baseArr:
+    if header != expected_header:
         raise ValueError("Formato invalido aqui")
     for row in data:
         (
@@ -49,11 +49,11 @@ def appendArr(arr, result):
 def csv_importer(filepath):
     arr = []
     try:
-        if filepath[-4:] != ".csv":
+        if not filepath.endswith(".csv"):
             raise ValueError("Formato invalido")
         with open(filepath) as file:
             result = csv.reader(file, delimiter=";", quotechar='"')
-            appendArr(arr, result)
+            append_arr(arr, result)
     except FileNotFoundError:
         raise ValueError("Arquivo file_not_exist.csv não encontrado")
     else:

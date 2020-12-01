@@ -6,7 +6,7 @@ def csv_exporter(filepath):
     if not filepath.endswith(".csv"):
         raise ValueError("Formato invalido")
     with open(filepath, "w") as file:
-        writeCsv = csv.writer(file, delimiter=";")
+        write_csv = csv.writer(file, delimiter=";")
         headers = [
             "url",
             "title",
@@ -18,7 +18,7 @@ def csv_exporter(filepath):
             "sources",
             "categories",
         ]
-        writeCsv.writerow(headers)
+        write_csv.writerow(headers)
         for document in db.news.find({}):
             url = document["url"]
             title = document["title"]
@@ -29,7 +29,7 @@ def csv_exporter(filepath):
             summary = document["summary"]
             sources = "".join(document["sources"])
             categories = ",".join(document["categories"])
-            writeCsv.writerow(
+            write_csv.writerow(
                 [
                     url,
                     title,
