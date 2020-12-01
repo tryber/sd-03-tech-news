@@ -8,9 +8,7 @@ def fetch_content(url, timeout=3, delay=0.5):
         response = requests.get(url, timeout=timeout)
     except (requests.ReadTimeout, requests.HTTPError):
         return ""
-    finally:
-        if response.status_code != 200:
-            return ""
+    else:
         return response.text
 
 
