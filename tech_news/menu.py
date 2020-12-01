@@ -3,6 +3,12 @@ from tech_news.collector.importer import csv_importer
 from tech_news.collector.scrapper import scrape
 from tech_news.collector.scrapper import fetch_content
 from tech_news.database import create_news
+from tech_news.analyzer.search_engine import search_by_title
+from tech_news.analyzer.search_engine import search_by_date
+from tech_news.analyzer.search_engine import search_by_source
+from tech_news.analyzer.search_engine import search_by_category
+from tech_news.analyzer.ratings import top_5_news
+from tech_news.analyzer.ratings import top_5_categories
 import sys
 
 
@@ -31,28 +37,32 @@ def collector_menu():
         print("Opção inválida", file=sys.stderr)
 
 
-def search_by_title():
-    input("Digite o título:")
+def search_title():
+    title = input("Digite o título:")
+    search_by_title(title)
 
 
-def search_by_date():
-    input("Digite a data no formato aaaa-mm-dd:")
+def search_date():
+    date = input("Digite a data no formato aaaa-mm-dd:")
+    search_by_date(date)
 
 
-def search_by_source():
-    input("Digite a fonte:")
+def search_source():
+    source = input("Digite a fonte:")
+    search_by_source(source)
 
 
-def search_by_category():
-    input("Digite a categoria:")
+def search_category():
+    category = input("Digite a categoria:")
+    search_by_category(category)
 
 
 def search_top_news():
-    print("teste")
+    top_5_news()
 
 
 def search_top_categories():
-    print("teste")
+    top_5_categories()
 
 
 def exit():
@@ -60,10 +70,10 @@ def exit():
 
 
 options = {
-    "1": search_by_title,
-    "2": search_by_date,
-    "3": search_by_source,
-    "4": search_by_category,
+    "1": search_title,
+    "2": search_date,
+    "3": search_source,
+    "4": search_category,
     "5": search_top_news,
     "6": search_top_categories,
     "7": exit,
