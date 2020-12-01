@@ -8,7 +8,6 @@ client = MongoClient(host=DB_HOST, port=int(DB_PORT))
 
 db = client.tech_news
 
-
 def top_5_news():
     arr = []
     for element in db.news.aggregate(
