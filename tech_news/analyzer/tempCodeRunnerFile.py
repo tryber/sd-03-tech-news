@@ -1,10 +1,4 @@
 from pymongo import MongoClient
-from decouple import config
-
-DB_HOST = config("DB_HOST", default="localhost")
-DB_PORT = config("DB_PORT", default="27017")
-
-client = MongoClient(host=DB_HOST, port=int(DB_PORT))
 
 
 client = MongoClient(
@@ -50,9 +44,12 @@ def top_5_categories():
                 }
             },
             {"$sort": {"count": -1, "_id": 1}},
-            {"$limit": 5},
+            {"$limit": 10},
         ]
     ):
         category = element["_id"]
         arr.append(category)   
     return arr
+
+
+print(top_5_categories())
