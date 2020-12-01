@@ -9,7 +9,7 @@ from decouple import config
 DB_HOST = config("DB_HOST", default="localhost")
 DB_PORT = config("DB_PORT", default="27017")
 
-client = MongoClient('mongodb://root:root@localhost:27017/?authMechanism=DEFAULT')
+client = MongoClient(host=DB_HOST, port=int(DB_PORT))
 db = client.tech_news
 
 NEW_NOTICE = {'url': 'https://www.tecmundo.com.br/brincadeira-levadaserio.htm',
