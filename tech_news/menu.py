@@ -31,8 +31,5 @@ def collector_menu():
         print("Opção inválida", file=sys.stderr)
 
 
-collector_menu()
-
-
 def analyzer_menu():
     """Seu código deve vir aqui"""
