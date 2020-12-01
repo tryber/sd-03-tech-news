@@ -3,9 +3,9 @@ import requests
 
 
 def fetch_content(url, timeout=3, delay=0.5):
+    sleep(delay)
     try:
         response = requests.get(url, timeout=timeout)
-        sleep(delay)
     except (requests.ReadTimeout, requests.HTTPError):
         return ""
     finally:
