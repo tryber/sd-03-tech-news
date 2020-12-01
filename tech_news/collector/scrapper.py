@@ -1,18 +1,20 @@
 from parsel import Selector
 from tech_news.database import create_news
 import requests
-import time
+from time import sleep
 
 BASE_URL = "https://www.tecmundo.com.br/novidades?page="
 
+
 def extract_num(input):
-    # input == None ? result = 0 : result = int(input[1:[:parsed.find(' ')]]) é o ternário disso
-    if input == None:
+    # input == None ? result = 0 : result = int(input[1:[:parsed.find(' ')]])
+    if input is None:
         return 0
     else:
-        parsed = input[1:] # Vem com um espaço antes, ignorando este espaço
+        parsed = input[1:]  # Vem com um espaço antes, ignorando este espaço
         sp_char = parsed.find(' ')
         return int(parsed[:sp_char])
+
 
 def fetch_content(url, timeout=3, delay=0.5):
     try:
@@ -24,8 +26,9 @@ def fetch_content(url, timeout=3, delay=0.5):
             return(response.text)
         else:
             return('')
-    time.sleep(delay)
+    sleep(delay)
     # Delay para evitar sobrecarga de chamadas
+
 
 def scrape(fetcher, pages=1):
     news_dump = []
@@ -49,5 +52,5 @@ def scrape(fetcher, pages=1):
                 "categories": news_sel.css("#js-categories a::text").getall()
             })
         current_page += 1
-    print('Resultato finale:', news_dump)
     create_news(news_dump)
+    print(f'Foram importadas {len(news_dump)} notícias')

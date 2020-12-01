@@ -1,15 +1,16 @@
 import csv
-# csv_importer('./samples/data.csv) para testar
-# from os import path
+from tech_news.database import create_news
+# csv_importer('./samples/data.csv') para testar
+
 
 def csv_importer(filepath):
     if not filepath.endswith('.csv'):
-        print('\nArquIn)v(áliD(etectad)o(')
+        raise ValueError('\nFormato de arquivo inválido')
 
     try:
         news_file = open(filepath, 'r')
     except OSError:
-        print('Erro ao abrir o arquivo', OSError)
+            print('\nErro ao abrir o arquivo. Ele existe?')
     else:
         news_reader = csv.reader(news_file, delimiter=";", quotechar='"')
         header, *news_data = news_reader
@@ -26,6 +27,7 @@ def csv_importer(filepath):
                 header[7]: row[7],
                 header[8]: row[8],
             })
-
-        print(header, '\nDados prontos:', news_dict)
+        create_news(news_dict)
+        print(header, '\nDados importados:', news_dict)
         news_file.close()
+
