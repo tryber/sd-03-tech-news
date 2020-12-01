@@ -1,4 +1,3 @@
-# from parsel import Selector
 import requests
 from time import sleep
 
@@ -13,3 +12,7 @@ def fetch_content(url, timeout=3, delay=0.5):
         return ''
     else:
         return response.text
+
+
+def scrape(fetcher, pages=1):
+    """ o código vai aqui """
