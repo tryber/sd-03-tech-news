@@ -25,9 +25,8 @@ def top_5_categories():
     list_query = [
         {"$unwind": "$categories"},
         {"$group": {"_id": "$categories", "count": {"$sum": 1}}},
-        {"$sort": {"count": -1}},
+        {"$sort": {"count": -1, "_id": 1}},
         {"$limit": 5},
-        {"$sort": {"_id": 1}},
     ]
 
     db_search_results = search_news_with_aggregate(list_query)

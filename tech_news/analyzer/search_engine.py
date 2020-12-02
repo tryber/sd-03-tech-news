@@ -3,10 +3,14 @@ import re
 
 
 def search_by_title(title):
-    db_search_results = search_news({"title": title}) or []
+    db_search_results = (
+        search_news({"title": {"$regex": re.compile(title, re.IGNORECASE)}})
+        or []
+    )
     list_of_tuples = [
         (data["title"], data["url"]) for data in db_search_results
     ]
+    print(title)
     return list_of_tuples
 
 
@@ -16,7 +20,7 @@ def search_by_date(date):
     )
 
     if reg_exp is False:
-        return print("Data inválida")
+        raise ValueError("Data inválida")
 
     db_search_results = search_news({"timestamp": {"$regex": date}}) or []
     list_of_tuples = [
@@ -26,7 +30,10 @@ def search_by_date(date):
 
 
 def search_by_source(source):
-    db_search_results = search_news({"sources": {"$all": [source]}}) or []
+    db_search_results = (
+        search_news({"sources": {"$all": [re.compile(source, re.IGNORECASE)]}})
+        or []
+    )
     list_of_tuples = [
         (data["title"], data["url"]) for data in db_search_results
     ]
@@ -34,7 +41,12 @@ def search_by_source(source):
 
 
 def search_by_category(category):
-    db_search_results = search_news({"categories": {"$all": [category]}}) or []
+    db_search_results = (
+        search_news(
+            {"categories": {"$all": [re.compile(category, re.IGNORECASE)]}}
+        )
+        or []
+    )
     list_of_tuples = [
         (data["title"], data["url"]) for data in db_search_results
     ]
