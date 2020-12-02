@@ -29,7 +29,11 @@ def scrape(fetcher, pages=1):
             data.append(
                 {
                     "url": url,
-                    "title": ' '.join(new.css("title *::text").getall()),
+                    "title": (
+                        new
+                        .css("#js-article-title ::text")
+                        .get()
+                    ),
                     "timestamp": new
                     .css("#js-article-date::attr(datetime)").get(),
                     "writer": new.css(".tec--author__info__link::text").get(),
@@ -41,8 +45,8 @@ def scrape(fetcher, pages=1):
                         new
                         .css("#js-comments-btn::attr(data-count)")
                         .get('0')),
-                    "summary": ' '.join(
-                        new.css(".tec--article__body *::text").getall()
+                    "summary": ''.join(
+                        (new.css(".tec--article__body *::text").getall())[0]
                     ),
                     "sources": new.css(".z--mb-16 .tec--badge::text").getall(),
                     "categories": new
