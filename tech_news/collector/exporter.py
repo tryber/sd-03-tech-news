@@ -7,10 +7,10 @@ from tech_news.database import find_news
 def csv_exporter(filepath):
     print(find_news())
     if not filepath.endswith(".csv"):
-        return print("File não possui extensão csv")
+        raise ValueError("Formato invalido")
 
     with open(filepath, "w") as file:
-        writer = csv.writer(file)
+        writer = csv.writer(file, delimiter=";")
 
         headers = [
             "url",
@@ -35,8 +35,8 @@ def csv_exporter(filepath):
                     dict["shares_count"],
                     dict["comments_count"],
                     dict["summary"],
-                    dict["sources"],
-                    dict["categories"],
+                    ','.join(dict["sources"]),
+                    ','.join(dict["categories"]),
                 ]
             )
 

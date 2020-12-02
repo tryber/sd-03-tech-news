@@ -5,9 +5,9 @@ from os import path
 def csv_importer(filepath):
     exists = path.exists(filepath)
     if not filepath.endswith('.csv'):
-        return print('File não possui a extensão csv')
+        raise ValueError('Formato invalido')
     if not exists:
-        return print('Arquivo não existe')
+        raise ValueError('Arquivo file_not_exist.csv não encontrado')
 
     data_list = []
     with open(filepath) as file:
