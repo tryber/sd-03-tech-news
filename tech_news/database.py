@@ -27,7 +27,7 @@ def insert_or_update(notice):
 
 
 def find_news():
-    return list(db.news.find({}, {'_id': False}))
+    return list(db.news.find({}, {"_id": False}))
 
 
 def search_news(query):
