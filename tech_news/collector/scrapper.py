@@ -16,7 +16,7 @@ def fetch_content(url, timeout=3, delay=0.5):
 
 def scrape(fetcher, pages=1):
     ENDPOINT = '?page='
-    response = fetch_content(fetcher)
+    response = fetcher('https://www.tecmundo.com.br/novidades')
     selector = Selector(text=response)
     hrefs = []
     data = []
@@ -25,14 +25,14 @@ def scrape(fetcher, pages=1):
 
     for page in range(1, pages + 1):
         for url in hrefs:
-            new = Selector(text=fetch_content(url + ENDPOINT + str(page)))
+            new = Selector(text=fetcher(url + ENDPOINT + str(page)))
             data.append(
                 {
                     "url": url,
-                    "title": new.css("title::text").get(),
+                    "title": ' '.join(new.css("title *::text").getall()),
                     "timestamp": new
                     .css("#js-article-date::attr(datetime)").get(),
-                    "whiter": new.css(".tec--author__info__link::text").get(),
+                    "writer": new.css(".tec--author__info__link::text").get(),
                     "shares_count": int(re.sub('[^0-9]', '',  (
                         new
                         .css(".tec--toolbar .tec--toolbar__item::text")
