@@ -29,5 +29,5 @@ def search_news(query):
     return list(db.news.find(query))
 
 
-def test(title):
-    return list(db.news.find({"title": title}, projection=["title"]))
+def get_news():
+    return db.news
