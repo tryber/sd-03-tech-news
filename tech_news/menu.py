@@ -27,7 +27,7 @@ def collector_menu():
         return create_news(imported)
     elif user_input == "2":
         file = input("Digite o nome do arquivo CSV a ser exportado: ")
-        return csv_exporter(file)    
+        return csv_exporter(file)
     elif user_input == "3":
         pages = input("Digite a quantidade de páginas a serem raspadas: ")
         scraped = scrape(fetcher=fetch_content, pages=int(pages))
