@@ -8,6 +8,10 @@ client = MongoClient(host=DB_HOST, port=int(DB_PORT))
 db = client.tech_news
 
 
+def check_duplicates(news):
+    return ""
+
+
 def create_news(data):
     db.news.insert_many(data)
 
@@ -27,3 +31,7 @@ def find_news():
 
 def search_news(query):
     return list(db.news.find(query))
+
+
+def get_news():
+    return db.news
