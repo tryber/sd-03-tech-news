@@ -19,6 +19,3 @@ def csv_importer(filepath):
                 dict[header] = list[index]
             data_list.append(dict)
     return data_list
-
-
-print(csv_importer('correct.csv'))

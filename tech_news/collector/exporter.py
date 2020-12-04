@@ -39,6 +39,3 @@ def csv_exporter(filepath):
                     ','.join(dict["categories"]),
                 ]
             )
-
-
-csv_exporter('test.csv')

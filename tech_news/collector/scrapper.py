@@ -25,8 +25,9 @@ def fetch_content(url, timeout=3, delay=0.5):
 
 
 def scrape(fetcher, pages=1):
+    pages_quantity = int(pages)
     data_list = []
-    for i in range(pages):
+    for i in range(pages_quantity):
         selector = Selector(
             text=fetcher("https://www.tecmundo.com.br/novidades/")
         )
@@ -61,6 +62,3 @@ def scrape(fetcher, pages=1):
                 }
             )
     return data_list
-
-
-print(scrape(fetch_content, 2))
