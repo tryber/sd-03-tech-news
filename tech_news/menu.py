@@ -5,6 +5,8 @@ from tech_news.collector.exporter import csv_exporter
 from tech_news.collector.scrapper import scrape, fetch_content
 from tech_news.analyzer.ratings import top_5_news, top_5_categories
 
+from tech_news.database import create_news
+
 from tech_news.analyzer.search_engine import (
     search_by_title,
     search_by_date,
@@ -42,12 +44,14 @@ def collector_menu():
     if answer == "1":
         filepath = input("Coloque o caminho do arquivo: ")
         result = csv_importer(filepath)
+        create_news(result)
     elif answer == "2":
         filepath = input("Coloque o caminho do arquivo: ")
         csv_exporter(filepath)
         result = "Exportado"
     elif answer == "3":
-        result = scrape(fetch_content, 1)
+        result = scrape(fetcher=fetch_content, pages=1)
+        create_news(result)
     elif answer == "4":
         result = "Encerrando script"
     else:
