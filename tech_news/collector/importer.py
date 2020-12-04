@@ -1,7 +1,7 @@
 import csv
 
 
-dic = {
+HEADERS_EXPECTED = [
     "url",
     "title",
     "timestamp",
@@ -11,7 +11,7 @@ dic = {
     "summary",
     "sources",
     "categories",
-}
+]
 
 
 def validFile(file):
@@ -21,24 +21,20 @@ def validFile(file):
 
 
 def csv_importer(filepath):
-    validFile(filepath)
+    file_name = validFile(filepath)
     try:
         with open(filepath, "r") as file:
             read = csv.DictReader(file, delimiter=";")
-            if read.fieldnames != dic:
+            if read.fieldnames != HEADERS_EXPECTED:
                 raise ValueError("Headers invalidos")
             file_read = [
                 {key: value for key, value in line.items()} for line in read
             ]
     except FileNotFoundError:
-        raise ValueError(f"Arquivo {filepath} não encontrado")
+        raise ValueError(f"Arquivo {file_name} não encontrado")
     else:
         return file_read
-    finally:
-        print("deu certo")
 
-
-# csv_importer('correct.csv')
 
 # with open(, 'w') as file:
 #             csv_writer = DictWriter(file, fieldnames=data[0].keys())
