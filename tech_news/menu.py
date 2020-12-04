@@ -9,10 +9,7 @@ from tech_news.analyzer.search_engine import (
     search_by_category,
 )
 from tech_news.analyzer.ratings import top_5_news, top_5_categories
-
-
-def create_news(file):
-    return file
+from tech_news.database import create_news
 
 
 def collector_menu():
@@ -30,8 +27,7 @@ def collector_menu():
         return create_news(imported)
     elif user_input == "2":
         file = input("Digite o nome do arquivo CSV a ser exportado: ")
-        exported = csv_exporter(file)
-        return create_news(exported)
+        return csv_exporter(file)    
     elif user_input == "3":
         pages = input("Digite a quantidade de páginas a serem raspadas: ")
         scraped = scrape(fetcher=fetch_content, pages=int(pages))
@@ -40,6 +36,38 @@ def collector_menu():
         return print("Encerrando script")
     else:
         return print("Opção inválida", file=sys.stderr)
+
+
+def choice_title():
+    title = input("Digite o título: ")
+    return search_by_title(title)
+
+
+def choice_date():
+    date = input("Digite a data no formato aaaa-mm-dd: ")
+    return search_by_date(date)
+
+
+def choice_source():
+    source = input("Digite a fonte: ")
+    return search_by_source(source)
+
+
+def choice_category():
+    category = input("Digite a categoria: ")
+    return search_by_category(category)
+
+
+def choice_top_news():
+    return top_5_news()
+
+
+def choice_top_categories():
+    return top_5_categories()
+
+
+def choice_exit():
+    return print("Encerrando script\n")
 
 
 def analyzer_menu():
@@ -54,27 +82,21 @@ def analyzer_menu():
         + "7 - Sair.\n "
     )
 
-    if user_input == "1":
-        title = input("Digite o título: ")
-        return search_by_title(title)
-    elif user_input == "2":
-        date = input("Digite a data no formato aaaa-mm-dd: ")
-        return search_by_date(date)
-    elif user_input == "3":
-        source = input("Digite a fonte: ")
-        return search_by_source(source)
-    elif user_input == "4":
-        category = input("Digite a categoria: ")
-        return search_by_category(category)
-    elif user_input == "5":
-        return top_5_news()
-    elif user_input == "6":
-        return top_5_categories()
-    elif user_input == "7":
-        return print("Encerrando script\n")
-    else:
-        return print("Opção inválida", file=sys.stderr)
+    dict_choice = {
+        "1": choice_title,
+        "2": choice_date,
+        "3": choice_source,
+        "4": choice_category,
+        "5": choice_top_news,
+        "6": choice_top_categories,
+        "7": choice_exit,
+    }
+
+    try:
+        return dict_choice[user_input]()
+    except KeyError:
+        print("Opção inválida", file=sys.stderr)
 
 
 if __name__ == "__main__":
-    collector_menu()
+    analyzer_menu()
