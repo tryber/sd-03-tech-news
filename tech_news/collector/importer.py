@@ -8,7 +8,6 @@ def csv_importer(filepath):
             raise ValueError("Formato invalido")
         with open(filepath, "r") as detail_csv:
             data_result = csv.reader(detail_csv, delimiter=";")
-
             for obj in data_result:
                 (
                     url,
@@ -21,9 +20,7 @@ def csv_importer(filepath):
                     sources,
                     categories,
                 ) = obj
-
-            new_data.append
-            (
+            new_data.append(
                 {
                     "url": url,
                     "title": title,
@@ -36,7 +33,6 @@ def csv_importer(filepath):
                     "categories": categories,
                 }
             )
-
     except FileNotFoundError:
         raise ValueError("Arquivo file_not_exist.csv não encontrado")
     else:

@@ -15,9 +15,9 @@ def fetch_content(url, timeout=3, delay=0.5):
         return response.text
 
 
-def get_urls(s):
-    u = s.css(".tec--list__item .tec--card__title__link::attr(href)").getall()
-    return u
+def get_urls(sel):
+    return sel.css(
+        ".tec--list__item .tec--card__title__link::attr(href)").getall()
 
 
 def get_pages_details(fetcher, url):
@@ -54,7 +54,7 @@ def scrape(fetcher, pages=1):
     while index <= pages:
         res = fetcher(end_point)
         sel = Selector(res)
-        url_list = get_urls(s=sel)
+        url_list = get_urls(sel=sel)
 
         for link in url_list:
             data = get_pages_details(fetcher=fetcher, url=link)
