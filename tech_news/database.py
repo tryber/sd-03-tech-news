@@ -14,10 +14,10 @@ def create_news(data):
     db.news.insert_many(data)
 
 
-def insert_or_update(notice):
+def insert_or_update(story):
     return (
         db.news.update_one(
-            {"url": notice["url"]}, {"$set": notice}, upsert=True
+            {"url": story["url"]}, {"$set": story}, upsert=True
         ).upserted_id
         is not None
     )
