@@ -1,6 +1,6 @@
 from parsel import Selector
 import requests
-import time
+from time import sleep
 import re
 
 
@@ -8,11 +8,13 @@ def fetch_content(url, timeout=3, delay=0.5):
     try:
         # recurso demora muito a responder
         response = requests.get(url, timeout=timeout)
-        time.sleep(delay)
+        sleep(delay)
     except requests.ReadTimeout:
         # vamos fazer uma nova requisição
         response = requests.get(url, timeout=timeout)
-        time.sleep(delay)
+        sleep(delay)
+    except requests.HTTPError:
+        return ""
     finally:
         if response.status_code != 200:
             return ""
@@ -28,50 +30,49 @@ def get_only_numbers(str):
     return result
 
 
-def no_white_spaces_around(str):
-    result = str
-    last_character = len(str)
-    if result[0] == " ":
-        result = result[1: last_character]
-        last_character = len(result)
-    if result[last_character - 1] == " ":
-        result = result[0: last_character - 1]
-    return result
-
-
 def no_list_item_white_spaces(list):
     result = []
     for items in list:
-        result.append(no_white_spaces_around(items))
+        result.append(items.strip())
     return result
 
 
-# Ref.: https://stackoverflow.com/questions/9662346/python-code-to-remove-html-tags-from-a-string
+# Ref.: https://bit.ly/2JPEQ8z
 def cleanhtml(raw_html):
     cleanr = re.compile('<.*?>')
     cleantext = re.sub(cleanr, '', raw_html)
     return cleantext
 
 
-def scrape(fetcher, pages=1):
-    source = "https://www.tecmundo.com.br/mobilidade-urbana-smart-cities/155000-musk-tesla-carros-totalmente-autonomos.htm"
+def get_resume(fetcher, url):
+    source = url
     response = fetcher(source)
     selector = Selector(text=response)
-    url = "Link da url"
+    url = f"{source}"
     title = selector.css(".tec--article__header__title::text").get()
     time = selector.css(".tec--timestamp__item time::attr(datetime)").get()
-    writer_text = selector.css(".tec--author__info__link::text").get()
-    writer = no_white_spaces_around(writer_text)
+    writer_text = selector.css("div.tec--timestamp__item a::text").get()
+    if not writer_text:
+        writer_text = selector.css(".tec--author__info__link::text").get()
+    if not writer_text:
+        writer = "Unknown"
+    else:
+        writer = writer_text.strip()
     shares_text = selector.css(".tec--toolbar__item::text").get()
-    shares_count = int(get_only_numbers(shares_text))
-    comments = int(selector.css("#js-comments-btn::attr(data-count)").get())
+    shares_count = 0
+    if shares_text:
+        shares_count = int(get_only_numbers(shares_text))
+    comments = selector.css("#js-comments-btn::attr(data-count)").get()
     summary_html = selector.css(".tec--article__body p").get()
-    summary = cleanhtml(summary_html)
+    if summary_html:
+        summary = cleanhtml(summary_html)
+    else:
+        summary = "Do not get summary"
     source_list = selector.css(".z--mb-16 .tec--badge::text").getall()
     sources = no_list_item_white_spaces(source_list)
     category_list = selector.css("#js-categories a::text").getall()
     categories = no_list_item_white_spaces(category_list)
-    return [{
+    return {
         "url": url,
         "title": title,
         "timestamp": time,
@@ -81,4 +82,20 @@ def scrape(fetcher, pages=1):
         "summary": summary,
         "sources": sources,
         "categories": categories
-    }]
+    }
+
+
+def scrape(fetcher, pages=1):
+    news_summary = []
+    next_page = "https://www.tecmundo.com.br/novidades/"
+    n = 0
+    while n < pages:
+        response = fetcher(next_page)
+        selector = Selector(text=response)
+        for url in selector.css("div.tec--list__item"):
+            link = url.css("a.tec--card__title__link::attr(href)").get()
+            news_summary.append(get_resume(fetcher, link))
+        next_page = selector.css(".tec--btn::attr(href)").get()
+        n += 1
+
+    return news_summary
