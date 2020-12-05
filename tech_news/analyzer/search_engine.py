@@ -1,21 +1,21 @@
 from pymongo import MongoClient
-""" from decouple import config """
+from decouple import config
 import re
 import datetime
 
-"""
+
 DB_HOST = config("DB_HOST", default="localhost")
 DB_PORT = config("DB_PORT", default="27017")
 
 client = MongoClient(host=DB_HOST, port=int(DB_PORT))
 db = client.tech_news
-"""
 
-# para testes locais com usuário e senha
+
+""" # para testes locais com usuário e senha
 client = MongoClient(
-    "mongodb://root:rootteste@localhost:27017/?authMechanism=DEFAULT"
+    "mongodb://usuario:senha@localhost:27017/?authMechanism=DEFAULT"
 )
-db = client.tech_news
+db = client.tech_news """
 
 """ requisito 5 """
 
