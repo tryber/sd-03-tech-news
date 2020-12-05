@@ -12,13 +12,13 @@ def create_news(data):
     db.news.insert_many(data)
 
 
-def insert_or_update(notice):
-    return (
-        db.news.update_one(
-            {"url": notice["url"]}, {"$set": notice}, upsert=True
-        ).upserted_id
-        is not None
-    )
+# def insert_or_update(notice):
+#     return (
+#         db.news.update_one(
+#             {"url": notice["url"]}, {"$set": notice}, upsert=True
+#         ).upserted_id
+#         is not None
+#     )
 
 
 def find_news():
