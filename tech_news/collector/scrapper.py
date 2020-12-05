@@ -48,7 +48,6 @@ def get_pages_details(fetcher, url):
 
 def scrape(fetcher, pages=1):
     end_point = URL_BASE
-    urls = []
     news_list = []
     index = 1
 
@@ -59,10 +58,8 @@ def scrape(fetcher, pages=1):
 
         for link in url_list:
             data = get_pages_details(fetcher=fetcher, url=link)
-            urls.append(data)
-        print("antes", len(news_list))
-        news_list.extend(urls)
-        print("depois", len(news_list))
+            news_list.append(data)
+
         end_point = sel.css(".tec--btn::attr(href)").get()
         index += 1
 
