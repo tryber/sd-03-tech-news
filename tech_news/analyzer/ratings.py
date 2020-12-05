@@ -1,5 +1,3 @@
-from pymongo import MongoClient
-from decouple import config
 from tech_news.database import db, client
 
 t5news_pipeline = [
@@ -10,8 +8,9 @@ t5news_pipeline = [
 t5cat_pipeline = [
     {'$group': {'_id': '$categories', 'soma_cat': { '$sum': 1 }}},
     {'$limit': 5},
-    {'$sort': {'soma_cat': -1}}
+    {'$sort': { 'soma_cat': -1 }}
 ]
+
 
 def top_5_news():
     results = []

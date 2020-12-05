@@ -7,11 +7,11 @@ def csv_exporter(filepath):
     if not filepath.endswith('.csv'):
         raise ValueError('\nFormato de arquivo deve ser CSV')
 
-    # O parâmetro w já sobrescreve quaisquer arquivos com o mesmo nome já existentes
-    # Caso queiramos um erro nesse caso, poderiamos usar o 'x'
+    # O parâmetro w já sobrescreve quaisquer arquivos de o mesmo nome
+    # já existentes. Caso queiramos um erro nesse caso, é só usar o 'x'
     with open(filepath, 'w') as file:
         write_buffer = csv.writer(file, delimiter=';', quotechar='"')
-        
+
         header = [
             'url',
             'title',

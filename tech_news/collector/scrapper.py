@@ -6,7 +6,7 @@ from time import sleep
 BASE_URL = "https://www.tecmundo.com.br/novidades?page="
 
 
-def extract_num(input):
+def digits(input):
     # input == None ? result = 0 : result = int(input[1:[:parsed.find(' ')]])
     if input is None:
         return 0
@@ -30,27 +30,40 @@ def fetch_content(url, timeout=3, delay=0.5):
     # Delay para evitar sobrecarga de chamadas
 
 
-def scrape(fetcher, pages=1):
+def extract_content(selector, url):
+    title = selector.css('h1.tec--article__header__title::text').get(),
+    time = selector.css('time#js-article-date::attr(datetime)').get(),
+    writer = selector.css('a.tec--author__info__link::text').get(),
+    shares = digits(selector.css('div.tec--toolbar__item::text').get()),
+    comments = digits(selector.css('#js-comments-btn::text').get()),
+    summary = selector.css('div.tec--article__body > p::text').get(),
+    sources = selector.css('div.z--mb-16 a::text').getall(),
+    categories = selector.css('#js-categories a::text').getall()
+    return {
+        'url': url,
+        'title': title,
+        'timestamp': time,
+        'writer': writer,
+        'shares_count': shares,
+        'comments_count': comments,
+        'summary': summary,
+        'sources': sources,
+        'categories': categories,
+    }
+
+
+def scrape(pages=1):
     news_dump = []
     current_page = 1
-    raw_html = fetcher(BASE_URL)
+    raw_html = fetch_content(BASE_URL)
+    print(raw_html)
     selector = Selector(text=raw_html)
     # Atributos a serem parseados em cada URL
     while current_page <= pages:
         for url in selector.css(".tec--card__title__link::attr(href)").getall():
             print('Estamos na página', current_page, 'URL', url)
             news_sel = Selector(fetch_content(url))
-            news_dump.append({
-                "url": url,
-                "title": news_sel.css("h1.tec--article__header__title::text").get(),
-                "timestamp": news_sel.css("time#js-article-date::attr(datetime)").get(),
-                "writer": news_sel.css("a.tec--author__info__link::text").get(),
-                "shares_count": extract_num(news_sel.css("div.tec--toolbar__item::text").get()),
-                "comments_count": news_sel.css("#js-comments-btn::attr(button)").get(),
-                "summary": ' '.join(news_sel.css("div.tec--article__body > p *::text").getall()),
-                "sources": news_sel.css("div.z--mb-16 a::text").getall(),
-                "categories": news_sel.css("#js-categories a::text").getall()
-            })
+            news_dump.append(extract_content(news_sel, url))
         current_page += 1
     create_news(news_dump)
     print(f'Foram importadas {len(news_dump)} notícias')

@@ -10,7 +10,7 @@ def csv_importer(filepath):
     try:
         news_file = open(filepath, 'r')
     except OSError:
-            print('\nErro ao abrir o arquivo. Ele existe?')
+        print('\nErro ao abrir o arquivo. Ele existe?')
     else:
         news_reader = csv.reader(news_file, delimiter=";", quotechar='"')
         header, *news_data = news_reader
@@ -30,4 +30,3 @@ def csv_importer(filepath):
         create_news(news_dict)
         print(header, '\nDados importados:', news_dict)
         news_file.close()
-

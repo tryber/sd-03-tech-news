@@ -1,7 +1,6 @@
-from pymongo import MongoClient
-from decouple import config
 from tech_news.database import db, client
 import re
+
 
 def search_by_title(title):
     results = []
