@@ -50,7 +50,8 @@ def get_detail_content(fetcher, url):
 
 def get_url_list(s):
     # Cria uma lista com os links de acesso das notícias.
-    return s.css(".tec--list__item .tec--card__title__link::attr(href)").getall()
+    return s.css(
+        ".tec--list__item .tec--card__title__link::attr(href)").getall()
 
 
 def mount_information(fetcher, urls_list):
