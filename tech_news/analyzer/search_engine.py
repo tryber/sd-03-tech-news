@@ -20,6 +20,7 @@ def search_by_date(date):
         datetime.strptime(date, "%Y-%m-%d")
     except ValueError:
         raise ValueError("Data inválida")
+
     news_list = db.news.find(
         {"timestamp": {"$regex": re.compile(date)}},
         {"title": True, "_id": False, "url": True}
