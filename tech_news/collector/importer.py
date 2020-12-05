@@ -22,8 +22,8 @@ def csv_importer(filepath):
                     categories,
                 ) = obj
 
-            new_data.append
-            (
+            new_data.append(
+
                 {
                     "url": url,
                     "title": title,

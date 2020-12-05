@@ -22,7 +22,8 @@ def get_detail_content(fetcher, url):
     get_selector = Selector(response)
 
     titles = get_selector.css(".tec--article__header__title::text").get()
-    times = get_selector.css(".tec--timestamp__item time::attr(datetime)").get()
+    times = get_selector.css(
+        ".tec--timestamp__item time::attr(datetime)").get()
     writer = get_selector.css(".tec--author__info__link::text").get()
     shares_count = get_selector.css(
         ".tec--toolbar__item::text").re_first(r"\d+")

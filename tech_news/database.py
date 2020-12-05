@@ -1,5 +1,6 @@
 from pymongo import MongoClient
 from decouple import config
+from re import IGNORECASE, compile
 
 DB_HOST = config("DB_HOST", default="localhost")
 DB_PORT = config("DB_PORT", default="27017")
@@ -27,3 +28,15 @@ def find_news():
 
 def search_news(query):
     return list(db.news.find(query))
+
+
+def find_by_news(pay):
+    find_news = db.news.find(
+        {"title": {"$regex": compile(pay, IGNORECASE)}},
+        {"title": True, "url": True}
+    )
+
+    for new in find_news:
+        return [(new["title"], new["url"])]
+
+    return []
