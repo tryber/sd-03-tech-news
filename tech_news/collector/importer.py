@@ -1,2 +1,7 @@
+import csv
+
 def csv_importer(filepath):
-    """Seu código deve vir aqui"""
+    with open(filepath) as file:
+        arquivo = csv.reader(file, delimiter=";")
+        header, *data = arquivo
+        
