@@ -1,26 +1,26 @@
-import requests
-import time
 from parsel import Selector
+import requests
+from time import sleep
 
 URL_BASE = "https://www.tecmundo.com.br/novidades"
-
-
-def sleep(delay):
-    time.sleep(delay)
 
 
 def fetch_content(url, timeout=3, delay=0.5):
     sleep(delay)
     try:
         response = requests.get(url, timeout=timeout)
-        response.raise_for_status()
     except (requests.ReadTimeout, requests.HTTPError):
         return ""
     else:
         return response.text
 
 
-def get_detail_content(fetcher, url):
+def get_urls(sel):
+    return sel.css(
+        ".tec--list__item .tec--card__title__link::attr(href)").getall()
+
+
+def get_pages_details(fetcher, url):
     info = {}
     response = fetcher(url=url)
     sel = Selector(response)
@@ -29,9 +29,7 @@ def get_detail_content(fetcher, url):
     times = sel.css(".tec--timestamp__item time::attr(datetime)").get()
     writer = sel.css(".tec--author__info__link::text").get()
     shares_count = sel.css(".tec--toolbar__item::text").re_first(r"\d+")
-    print(shares_count)
     comments_count = sel.css("#js-comments-btn::text").re_first(r"\d+")
-    print(comments_count)
     summary = sel.css("div.tec--article__body > p::text").get()
     sources = sel.css(".z--mb-16 a.tec--badge::text").getall()
     categories = sel.css("#js-categories a::text").getall()
@@ -48,42 +46,21 @@ def get_detail_content(fetcher, url):
     return info
 
 
-def get_url_list(s):
-    # Cria uma lista com os links de acesso das notícias.
-    return s.css(
-        ".tec--list__item .tec--card__title__link::attr(href)").getall()
-
-
-def mount_information(fetcher, urls_list):
-    params_list = []
-    for detail_url in urls_list:
-        info = get_detail_content(fetcher=fetcher, url=detail_url)
-        print("info")
-        params_list.append(info)
-    return params_list
-
-
 def scrape(fetcher, pages=1):
-    last_url = URL_BASE
-    data_list = []
-    i = 1
+    end_point = URL_BASE
+    news_list = []
+    index = 1
 
-    while i <= pages:
-        response = fetcher(last_url)
-        sel = Selector(response)
+    while index <= pages:
+        res = fetcher(end_point)
+        sel = Selector(res)
+        url_list = get_urls(sel=sel)
 
-        # Pega a lista de url da página
-        list = get_url_list(sel=sel)
+        for link in url_list:
+            data = get_pages_details(fetcher=fetcher, url=link)
+            news_list.append(data)
 
-        # Depois de criada a lista de urls
-        # é percorrido a lista para acessar as páginas
-        # e gravado os dados do detalhe da página
-        data = mount_information(fetcher=fetcher, urls_list=list)
-        data_list.extend(data)
+        end_point = sel.css(".tec--btn::attr(href)").get()
+        index += 1
 
-        # Depois de gravar os dados pega a próxima página
-        last_url = sel.css(".tec--btn::attr(href)").get()
-        print("ultima url", last_url)
-        i += 1
-
-    return data_list
+    return news_list
