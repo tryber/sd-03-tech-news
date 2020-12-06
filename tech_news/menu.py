@@ -78,7 +78,6 @@ def analyzer_menu():
         "2": lambda search: search_by_date(search),
         "3": lambda search: search_by_source(search),
         "4": lambda search: search_by_category(search),
-
     }
 
     try:

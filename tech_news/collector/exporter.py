@@ -1,5 +1,4 @@
 from tech_news.database import db
-from decouple import config
 import csv
 
 

@@ -1,14 +1,11 @@
 import re
 import datetime
-from pymongo import MongoClient
-from decouple import config
 from tech_news.database import db
 
 
 def search_by_title(title):
     regex = re.compile(title, re.IGNORECASE)
-    query = db.news.find({"title": regex}, {
-                            "title": 1, "url": 1, "_id": 0})
+    query = db.news.find({"title": regex}, {"title": 1, "url": 1, "_id": 0})
     result = [(doc["title"], doc["url"]) for doc in query]
     if not len(result):
         return []
@@ -19,12 +16,11 @@ def search_by_date(date):
     try:
         datetime.datetime.strptime(date, "%Y-%m-%d")
     except ValueError:
-        raise ValueError('Data inválida')
+        raise ValueError("Data inválida")
     else:
-        regex = re.compile(date, re.IGNORECASE)        
+        regex = re.compile(date, re.IGNORECASE)
         query = db.news.find(
-            {"timestamp": regex},
-            {"title": 1, "url": 1, "_id": 0}
+            {"timestamp": regex}, {"title": 1, "url": 1, "_id": 0}
         )
         result = [(doc["title"], doc["url"]) for doc in query]
         print(result)
@@ -35,9 +31,7 @@ def search_by_date(date):
 
 def search_by_source(source):
     regex = re.compile(source, re.IGNORECASE)
-    unwind = {
-        "$unwind": "$sources"
-    }
+    unwind = {"$unwind": "$sources"}
     match = {
         "$match": {
             "sources": {
@@ -57,9 +51,7 @@ def search_by_source(source):
 def search_by_category(category):
     """Seu código deve vir aqui"""
     regex = re.compile(category, re.IGNORECASE)
-    unwind = {
-        "$unwind": "$categories"
-    }
+    unwind = {"$unwind": "$categories"}
     match = {
         "$match": {
             "categories": {
