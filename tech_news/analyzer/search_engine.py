@@ -2,24 +2,17 @@ import re
 import datetime
 from pymongo import MongoClient
 from decouple import config
-
-DB_HOST = config("DB_HOST", default="localhost")
-DB_PORT = config("DB_PORT", default="27017")
-
-client = MongoClient(host=DB_HOST, port=int(DB_PORT))
-db = client.tech_news
+from tech_news.database import db
 
 
 def search_by_title(title):
     regex = re.compile(title, re.IGNORECASE)
-    with client as session:
-        db = session.tech_news
-        query = db.news.find({"title": regex}, {
-                             "title": 1, "url": 1, "_id": 0})
-        result = [(doc["title"], doc["url"]) for doc in query]
-        if not len(result):
-            return []
-        return list(result)
+    query = db.news.find({"title": regex}, {
+                            "title": 1, "url": 1, "_id": 0})
+    result = [(doc["title"], doc["url"]) for doc in query]
+    if not len(result):
+        return []
+    return list(result)
 
 
 def search_by_date(date):
@@ -28,18 +21,16 @@ def search_by_date(date):
     except ValueError:
         raise ValueError('Data inválida')
     else:
-        regex = re.compile(date, re.IGNORECASE)
-        with client as session:
-            db = session.tech_news
-            query = db.news.find(
-                {"timestamp": regex},
-                {"title": 1, "url": 1, "_id": 0}
-            )
-            result = [(doc["title"], doc["url"]) for doc in query]
-            print(result)
-            if not len(result):
-                return []
-            return result
+        regex = re.compile(date, re.IGNORECASE)        
+        query = db.news.find(
+            {"timestamp": regex},
+            {"title": 1, "url": 1, "_id": 0}
+        )
+        result = [(doc["title"], doc["url"]) for doc in query]
+        print(result)
+        if not len(result):
+            return []
+        return result
 
 
 def search_by_source(source):
@@ -54,14 +45,13 @@ def search_by_source(source):
             }
         }
     }
-    with client as session:
-        db = session.tech_news
-        print([doc for doc in db.news.find()])
-        query = db.news.aggregate([unwind, match])
-        result = [(doc["title"], doc["url"]) for doc in query]
-        if not len(result):
-            return []
-        return list(result)
+
+    print([doc for doc in db.news.find()])
+    query = db.news.aggregate([unwind, match])
+    result = [(doc["title"], doc["url"]) for doc in query]
+    if not len(result):
+        return []
+    return list(result)
 
 
 def search_by_category(category):
@@ -77,11 +67,8 @@ def search_by_category(category):
             }
         }
     }
-    with client as session:
-        db = session.tech_news
-        print([doc for doc in db.news.find()])
-        query = db.news.aggregate([unwind, match])
-        result = [(doc["title"], doc["url"]) for doc in query]
-        if not len(result):
-            return []
-        return list(result)
+    query = db.news.aggregate([unwind, match])
+    result = [(doc["title"], doc["url"]) for doc in query]
+    if not len(result):
+        return []
+    return list(result)

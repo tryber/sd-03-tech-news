@@ -1,18 +1,11 @@
-from pymongo import MongoClient
+from tech_news.database import db
 from decouple import config
 import csv
 
-DB_HOST = config("DB_HOST", default="localhost")
-DB_PORT = config("DB_PORT", default="27017")
-
-client = MongoClient(host=DB_HOST, port=int(DB_PORT))
-
 
 def get_db_data():
-    with client as session:
-        db = session.tech_news
-        data = db.news.find()
-        return data
+    db.news.find()
+    return data
 
 
 def csv_translate(data, output_file):
@@ -42,6 +35,3 @@ def csv_exporter(filepath):
             csv_translate(data, file)
     except ValueError:
         raise ValueError('Formato invalido')
-
-
-# csv_exporter('/home/nato/Trybe/projects/sd-03-tech-news/correct.csv')
