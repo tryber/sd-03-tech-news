@@ -1,21 +1,14 @@
+from re import compile, IGNORECASE
 from datetime import datetime
 from tech_news.database import db
-from re import IGNORECASE, compile
-
-
-def find_by_news(pay):
-    find_news = db.news.find(
-        {"title": {"$regex": compile(pay, IGNORECASE)}},
-        {"title": True, "url": True}
-    )
-
-    return find_news
 
 
 def search_by_title(title):
-    result = find_by_news(title)
+    find_by_title = db.news.find(
+        {"title": {"$regex": compile(title, IGNORECASE)}}
+    )
 
-    for new in result:
+    for new in find_by_title:
         return [(new["title"], new["url"])]
 
     return []
@@ -26,9 +19,9 @@ def search_by_date(date):
         datetime.strptime(date, "%Y-%m-%d")
     except ValueError:
         raise ValueError("Data inválida")
+
     find_by_date = db.news.find(
-        {"timestamp": {"$regex": compile(date)}},
-        {"title": True, "url": True}
+        {"timestamp": {"$regex": compile(date)}}
     )
 
     for new in find_by_date:
@@ -38,19 +31,22 @@ def search_by_date(date):
 
 
 def search_by_source(source):
-    result = find_by_news(source)
-    print("cheguei", result)
+    find_by_source = db.news.find(
+        {"sources": {"$regex": compile(source, IGNORECASE)}}
+    )
 
-    for new in result:
+    for new in find_by_source:
         return [(new["title"], new["url"])]
 
     return []
 
 
 def search_by_category(category):
-    result = find_by_news(category)
+    find_by_category = db.news.find(
+        {"categories": {"$regex": compile(category, IGNORECASE)}},
+    )
 
-    for new in result:
+    for new in find_by_category:
         return [(new["title"], new["url"])]
 
     return []
