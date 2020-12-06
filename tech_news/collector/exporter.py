@@ -1,5 +1,4 @@
 import csv
-from tech_news.database import db
 
 
 def csv_exporter(filepath):
