@@ -45,9 +45,6 @@ def collector_menu():
         print("Encerrando script\n")
 
 
-# collector_menu()
-
-
 def analyzer_menu():
     options = """Selecione uma das opções a seguir:
  1 - Buscar notícias por título;
@@ -96,6 +93,3 @@ def create_news():
     with open("correct.csv"):
         pass
     pass
-
-
-# analyzer_menu()
