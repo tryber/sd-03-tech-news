@@ -1,4 +1,5 @@
 import re
+import datetime
 from tech_news.database import get_news
 
 
@@ -12,7 +13,17 @@ def search_by_title(title):
 
 
 def search_by_date(date):
-    """Seu código deve vir aqui"""
+    # ref:
+    # https://www.programiz.com/python-programming/datetime/strptime
+    try:
+        datetime.strptime(date, "%Y-%m-%d")
+    except ValueError:
+        raise ValueError("Data inválida")
+    response_news = get_news().find(
+        {"timestamp": {"$regex": re.compile(date)}},
+        {"title": True, "_id": False, "url": True},
+    )
+    return [(news["title"], news["url"]) for news in response_news]
 
 
 def search_by_source(source):
