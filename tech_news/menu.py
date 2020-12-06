@@ -1,6 +1,4 @@
 import sys
-
-# from tech_news.collector import exporter, importer, scrapper
 from tech_news.collector.importer import csv_importer
 from tech_news.collector.exporter import csv_exporter
 from tech_news.collector.scrapper import scrape, fetch_content
@@ -12,33 +10,31 @@ from tech_news.analyzer.search_engine import (
     search_by_title,
 )
 
-options = """Selecione uma das opções a seguir:
+
+def collector_menu():
+    options = """Selecione uma das opções a seguir:
  1 - Importar notícias a partir de um arquivo CSV;
  2 - Exportar notícias para CSV;
  3 - Raspar notícias online;
  4 - Sair."""
 
-next_step = {
-    "1": "Digite o nome do arquivo CSV a ser importado:",
-    "2": "Digite o nome do arquivo CSV a ser exportado",
-    "3": "Digite a quantidade de páginas a serem raspadas:",
-}
+    next_step = {
+        "1": "Digite o nome do arquivo CSV a ser importado:",
+        "2": "Digite o nome do arquivo CSV a ser exportado",
+        "3": "Digite a quantidade de páginas a serem raspadas:",
+    }
 
-module_to_use = {
-    "1": lambda path: csv_importer(path),
-    "2": lambda path: csv_exporter(path),
-    "3": lambda pages: scrape(fetcher=fetch_content, pages=int(pages)),
-}
+    module_to_use = {
+        "1": lambda path: csv_importer(path),
+        "2": lambda path: csv_exporter(path),
+        "3": lambda pages: scrape(fetcher=fetch_content, pages=int(pages)),
+    }
 
-
-def collector_menu():
     try:
-        create_news()
-        print(options)
-        choice = input()
+        create_news()  # testes pediram essa chamada sem descrição da função
+        choice = input(options)
         if choice in next_step.keys():
-            print(next_step[choice])
-            path = input()
+            path = input(next_step[choice])
             result = module_to_use[choice](path)
             print(result)
         else:
@@ -63,7 +59,6 @@ def analyzer_menu():
  7 - Sair."""
 
     next_step = {
-        "0": lambda: print(),
         "1": lambda: print("Digite o título:"),
         "2": lambda: print("Digite a data no formato aaaa-mm-dd:"),
         "3": lambda: print("Digite a fonte:"),
@@ -73,7 +68,6 @@ def analyzer_menu():
     }
 
     module_to_use = {
-        "0": lambda test: print(options),
         "1": lambda search: search_by_title(search),
         "2": lambda search: search_by_date(search),
         "3": lambda search: search_by_source(search),
@@ -81,8 +75,7 @@ def analyzer_menu():
     }
 
     try:
-        print(options)
-        choice = input()
+        choice = input(options)
         if choice in next_step.keys():
             next_step[choice]()
         else:
@@ -93,13 +86,13 @@ def analyzer_menu():
             print(result)
 
     except (KeyError, TypeError, IndexError):
-        print("Encerrando script\n")
         raise ValueError("Opção inválida\n")
     finally:
         print("Encerrando script\n")
 
 
 def create_news():
+    # Não existe descrição para montar função
     with open("correct.csv"):
         pass
     pass
