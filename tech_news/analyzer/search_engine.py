@@ -15,6 +15,7 @@ def search_by_title(title):
 def search_by_date(date):
     # ref:
     # https://www.programiz.com/python-programming/datetime/strptime
+    # commit de desentupimento
     try:
         datetime.strptime(date, "%Y-%m-%d")
     except ValueError:
