@@ -1,5 +1,5 @@
 import re
-import datetime
+from datetime import datetime
 from tech_news.database import get_news
 
 
@@ -15,7 +15,6 @@ def search_by_title(title):
 def search_by_date(date):
     # ref:
     # https://www.programiz.com/python-programming/datetime/strptime
-    # commit de desentupimento
     try:
         datetime.strptime(date, "%Y-%m-%d")
     except ValueError:
