@@ -67,5 +67,5 @@ def scrape(fetcher, pages=1):
 
         curr_page += 1
     create_news(news_dump)
-    print(news_dump)
+    return news_dump
     # print(f'Foram importadas {len(news_dump)} notícias')
