@@ -5,7 +5,7 @@ from tech_news.database import find_news
 
 def csv_exporter(filepath):
     if not filepath.endswith('.csv'):
-        raise ValueError('\nFormato de arquivo deve ser CSV')
+        raise ValueError('\nFormato invalido')
 
     # O parâmetro w já sobrescreve quaisquer arquivos de o mesmo nome
     # já existentes. Caso queiramos um erro nesse caso, é só usar o 'x'
@@ -37,5 +37,6 @@ def csv_exporter(filepath):
 
         # Gravando linha a linha cada notícia
         for news in news_dump:
+            print(news)
             write_buffer2.writerow(news)
         file.close()

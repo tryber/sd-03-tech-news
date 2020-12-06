@@ -1,19 +1,23 @@
 import csv
+# from os import path
 from tech_news.database import create_news
 # csv_importer('./samples/data.csv') para testar
 
 
 def csv_importer(filepath):
     if not filepath.endswith('.csv'):
-        raise ValueError('\nFormato de arquivo inválido')
+        raise ValueError('\nFormato invalido')
+    # if not path.exists(filepath)
+    #     raise ValueError('\nCaminho inválido')
 
     try:
         news_file = open(filepath, 'r')
     except OSError:
-        print('\nErro ao abrir o arquivo. Ele existe?')
+        print('\nArquivo file_not_exist.csv não encontrado')
     else:
         news_reader = csv.reader(news_file, delimiter=";", quotechar='"')
         header, *news_data = news_reader
+        # Separação do header do resto do conteúdo do arquivo
         news_dict = []
         for row in news_data:
             news_dict.append({
@@ -28,5 +32,5 @@ def csv_importer(filepath):
                 header[8]: row[8],
             })
         create_news(news_dict)
-        print(header, '\nDados importados:', news_dict)
+        print(news_dict)
         news_file.close()
