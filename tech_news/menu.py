@@ -1,5 +1,5 @@
 from tech_news.collector import importer, exporter, scrapper
-# from tech_news.analyzer import ratings, search_engine
+from tech_news.analyzer import search_engine
 import sys
 
 # User tech-news-collector para executar este programa direto do shell
@@ -44,20 +44,20 @@ def collector_menu():
         sys.stderr.write('Opção inválida\n')
 
 
-# def analyzer_menu():
-#     user_choice = int(input(alz_menu))
-#     if user_choice == 1:
-#         path = input('Digite o título:')
-#         return search_engine.search_by_title(path)
-#     elif user_choice == 2:
-#         path = input('Digite a data no formato aaaa-mm-dd:')
-#         return search_engine.search_by_date(path)
-#     elif user_choice == 3:
-#         pages = input('Digite a fonte:')
-#         return search_engine.search_by_source(int(pages))
-#     elif user_choice == 4:
-#         pages = input('Digite a categoria:')
-#         return search_engine.search_by_category(int(pages))
+def analyzer_menu():
+    user_choice = int(input(alz_menu))
+    if user_choice == 1:
+        path = input('Digite o título:')
+        return search_engine.search_by_title(path)
+    elif user_choice == 2:
+        path = input('Digite a data no formato aaaa-mm-dd:')
+        return search_engine.search_by_date(path)
+    elif user_choice == 3:
+        pages = input('Digite a fonte:')
+        return search_engine.search_by_source(int(pages))
+    elif user_choice == 4:
+        pages = input('Digite a categoria:')
+        return search_engine.search_by_category(int(pages))
 #     elif user_choice == 5:
 #         return ratings.top_5_news()
 #     elif user_choice == 6:
@@ -65,5 +65,5 @@ def collector_menu():
 #     elif user_choice == 7:
 #         print('Encerrando script\n')
 #         exit
-#     else:
-#         sys.stderr.write('Opção inválida\n')
+    else:
+        sys.stderr.write('Opção inválida\n')
