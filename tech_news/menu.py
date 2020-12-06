@@ -1,5 +1,5 @@
 from tech_news.collector import importer, exporter, scrapper
-from tech_news.analyzer import ratings, search_engine
+# from tech_news.analyzer import ratings, search_engine
 import sys
 
 # User tech-news-collector para executar este programa direto do shell
