@@ -2,6 +2,7 @@ from parsel import Selector
 import requests
 from time import sleep
 import re
+from tech_news.database import create_news
 
 
 def fetch_content(url, timeout=3, delay=0.5):
@@ -92,5 +93,5 @@ def scrape(fetcher, pages=1):
             news_summary.append(get_resume(fetcher, link))
         next_page = selector.css(".tec--btn::attr(href)").get()
         n += 1
-
+    create_news(news_summary)
     return news_summary
