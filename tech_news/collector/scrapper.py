@@ -6,6 +6,7 @@ from time import sleep
 BASE_URL = "https://www.tecmundo.com.br/novidades?page="
 URL_SELECTOR = '.tec--card__title__link::attr(href)'
 
+
 def digits(input):
     # input == None ? result = 0 : result = int(input[1:[:parsed.find(' ')]])
     if input is None:
@@ -58,7 +59,7 @@ def scrape(pages=1):
         homepage_html = fetch_content(f'{BASE_URL}{curr_page}')
         selector = Selector(text=homepage_html)
         # Atributos a serem parseados em cada URL
-        
+
         for url in selector.css(URL_SELECTOR).getall():
             print('Estamos na página', curr_page, 'URL', url)
             news_sel = Selector(fetch_content(url))

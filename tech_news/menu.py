@@ -12,25 +12,22 @@ menu = """Selecione uma das opções a seguir:
 
 
 def collector_menu():
-    try:
-        user_choice = int(input(menu))
-        if user_choice == 1:
-            path = input('Digite o nome do arquivo CSV a ser importado:')
-            importer.csv_importer(path)
-        elif user_choice == 2:
-            path = input('Digite o nome do arquivo CSV a ser exportado:')
-            exporter.csv_exporter(path)
-        elif user_choice == 3:
-            pages = input(
-                'Digite a quantidade de páginas a serem raspadas:'
-                )
-            scrapper.scrape(int(pages))
-        elif user_choice == 4:
-            print('Encerrando script\n')
-            exit
-        else:
-            sys.stderr.write('Opção inválida\n')
-    except ValueError:
+    user_choice = int(input(menu))
+    if user_choice == 1:
+        path = input('Digite o nome do arquivo CSV a ser importado:')
+        importer.csv_importer(path)
+    elif user_choice == 2:
+        path = input('Digite o nome do arquivo CSV a ser exportado:')
+        exporter.csv_exporter(path)
+    elif user_choice == 3:
+        pages = input(
+            'Digite a quantidade de páginas a serem raspadas:'
+            )
+        scrapper.scrape(int(pages))
+    elif user_choice == 4:
+        print('Encerrando script\n')
+        exit
+    else:
         sys.stderr.write('Opção inválida\n')
 
 
