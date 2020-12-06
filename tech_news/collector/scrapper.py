@@ -5,21 +5,16 @@ import re
 
 
 def fetch_content(url, timeout=3, delay=0.5):
+    sleep(delay)
     try:
         # recurso demora muito a responder
         response = requests.get(url, timeout=timeout)
-        sleep(delay)
-    except requests.ReadTimeout:
-        # vamos fazer uma nova requisição
-        response = requests.get(url, timeout=timeout)
-        sleep(delay)
-    except requests.HTTPError:
-        return ""
-    finally:
         if response.status_code != 200:
             return ""
-        else:
-            return response.text
+    except (requests.ReadTimeout, requests.HTTPError):
+        return ""
+    else:
+        return response.text
 
 
 def get_only_numbers(str):
