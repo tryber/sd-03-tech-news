@@ -19,14 +19,15 @@ def digits(input):
 
 def fetch_content(url, timeout=3, delay=0.5):
     try:
-        response = requests.get(url, timeout=timeout)
+        response = requests.get(url, timeout=3)
+        sleep(delay)
     except requests.ReadTimeout:
-        response = requests.get(url, timeout=timeout)
+        response = ''
+        return response
     else:
         if response.status_code == 200:
             return(response.text)
         return('')
-    sleep(delay)
     # Delay para evitar sobrecarga de chamadas
 
 
@@ -52,17 +53,17 @@ def extract_content(selector, url):
     }
 
 
-def scrape(pages=1):
+def scrape(fetcher, pages=1):
     news_dump = []
     curr_page = 1
     while curr_page <= pages:
-        homepage_html = fetch_content(f'{BASE_URL}{curr_page}')
+        homepage_html = fetcher(f'{BASE_URL}{curr_page}')
         selector = Selector(text=homepage_html)
         # Atributos a serem parseados em cada URL
 
         for url in selector.css(URL_SELECTOR).getall():
             print('Estamos na página', curr_page, 'URL', url)
-            news_sel = Selector(fetch_content(url))
+            news_sel = Selector(fetcher(url))
             news_dump.append(extract_content(news_sel, url))
 
         curr_page += 1
