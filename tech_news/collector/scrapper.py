@@ -83,7 +83,7 @@ def get_resume(fetcher, url):
 
 def scrape(fetcher, pages=1):
     news_summary = []
-    next_page = "https://www.tecmundo.com.br/novidades/"
+    next_page = "https://www.tecmundo.com.br/novidades?page=1"
     n = 0
     while n < pages:
         response = fetcher(next_page)
