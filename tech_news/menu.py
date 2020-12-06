@@ -1,4 +1,7 @@
-from tech_news.collector import importer, exporter, scrapper
+from tech_news.collector.importer import csv_importer
+from tech_news.collector.exporter import csv_exporter
+from tech_news.collector.scrapper import scrape, fetch_content
+# Fazendo em apenas uma linha não passou no teste
 from tech_news.analyzer import search_engine
 import sys
 
@@ -28,15 +31,15 @@ def collector_menu():
     user_choice = int(input(col_menu))
     if user_choice == 1:
         path = input('Digite o nome do arquivo CSV a ser importado:')
-        return importer.csv_importer(path)
+        return csv_importer(path)
     elif user_choice == 2:
         path = input('Digite o nome do arquivo CSV a ser exportado:')
-        return exporter.csv_exporter(path)
+        return csv_exporter(path)
     elif user_choice == 3:
         pages = input(
             'Digite a quantidade de páginas a serem raspadas:'
             )
-        return scrapper.scrape(fetcher='fetch_content', pages=int(pages))
+        return scrape(fetcher=fetch_content, pages=int(pages))
     elif user_choice == 4:
         print('Encerrando script\n')
         exit

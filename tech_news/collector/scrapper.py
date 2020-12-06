@@ -4,7 +4,7 @@ import requests
 from time import sleep
 
 BASE_URL = "https://www.tecmundo.com.br/novidades?page="
-URL_SELECTOR = '.tec--card__title__link::attr(href)'
+URL_SELECTOR = '.tec--list .tec--card__title__link::attr(href)'
 
 
 def digits(input):
@@ -62,10 +62,10 @@ def scrape(fetcher, pages=1):
         # Atributos a serem parseados em cada URL
 
         for url in selector.css(URL_SELECTOR).getall():
-            print('Estamos na página', curr_page, 'URL', url)
             news_sel = Selector(fetcher(url))
             news_dump.append(extract_content(news_sel, url))
 
         curr_page += 1
     create_news(news_dump)
-    print(f'Foram importadas {len(news_dump)} notícias')
+    print(news_dump)
+    # print(f'Foram importadas {len(news_dump)} notícias')
