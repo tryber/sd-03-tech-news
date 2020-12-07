@@ -17,7 +17,7 @@ HEADER = [
 
 def csv_exporter(filepath):
     if not Path(filepath).suffix == ".csv":
-        raise ValueError("Extensão inválida")
+        raise ValueError("Formato invalido")
     with open(filepath, "w") as file:
         writer = csv.writer(file, delimiter=";")
         writer.writerow(HEADER)
