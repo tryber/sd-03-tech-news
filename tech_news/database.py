@@ -30,4 +30,4 @@ def search_news(query):
 
 
 def aggregate_filter(query):
-    return db.news.aggregate(query)
+    return list(db.news.aggregate(query))

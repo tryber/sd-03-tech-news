@@ -25,4 +25,22 @@ def top_5_news():
 
 
 def top_5_categories():
-    """Seu código deve vir aqui"""
+    top_five = []
+    for element in aggregate_filter(
+        [
+            {
+                "$unwind": "$categories",
+            },
+            {
+                "$group": {
+                    "_id": "$categories",
+                    "count": {"$sum": 1},
+                }
+            },
+            {"$sort": {"count": -1, "_id": 1}},
+            {"$limit": 5},
+        ]
+    ):
+        category = element["_id"]
+        top_five.append(category)
+    return top_five
