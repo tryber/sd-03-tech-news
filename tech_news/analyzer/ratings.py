@@ -37,7 +37,7 @@ def top_5_categories():
           "totalCategories": {
             "$sum": 1,
           }
-      },
+        },
       },
       {
         "$sort": {
