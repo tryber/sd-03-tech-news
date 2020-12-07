@@ -38,8 +38,8 @@ def search_by_source(source):
 
 def search_by_category(category):
     results = []
-    for news in db.news.find({'categories':
-        {'$regex':  re.compile(category, re.IGNORECASE)}
+    for news in db.news.find({'categories': {
+        '$regex':  re.compile(category, re.IGNORECASE)}
     }):
         results.append((news['title'], news['url']))
     client.close()
