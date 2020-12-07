@@ -62,6 +62,7 @@ def scrape(fetcher, pages=1):
         # Atributos a serem parseados em cada URL
 
         for url in selector.css(URL_SELECTOR).getall():
+            print('Estamos na página', curr_page, 'URL', url)
             news_sel = Selector(fetcher(url))
             news_dump.append(extract_content(news_sel, url))
 
