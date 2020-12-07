@@ -27,3 +27,40 @@ def find_news():
 
 def search_news(query):
     return list(db.news.find(query))
+
+
+def search_using_title(term):
+    return list(db.news.find(
+        # {"title": {"$regex": f"^{term}$"}}, {"title": 1, "url": 1, "id": 0}
+        {"$regex": re.compile(term, re.IGNORECASE)}
+    ))
+
+
+def search_using_date(term):
+    return list(db.news.find(
+        {"timestamp": {"$regex": term}}, {"title": 1, "url": 1, "id": 0}
+    ))
+
+
+def search_using_source(term):
+    return list(db.news.find(
+        {"sources": {"$all": [term]}}, {"title": 1, "url": 1, "id": 0}
+    ))
+
+
+def search_using_categories(term):
+    return list(db.news.find(
+        {"categories": {"$all": [term]}}, {"title": 1, "url": 1, "id": 0}
+    ))
+
+
+def get_top_news_by_shares():
+    return list(db.news.find({}, {"title": 1, "url": 1, "id": 0}).sort(
+        {"shares_count": 1}, {"title": 1},
+    ).limit(5))
+
+
+def get_top_news_by_comments():
+    return list(db.news.find({}, {"title": 1, "url": 1, "id": 0}).sort(
+        {"comments_count": 1}, {"title": 1},
+    ).limit(5))
