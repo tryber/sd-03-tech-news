@@ -4,6 +4,8 @@ from decouple import config
 DB_HOST = config("DB_HOST", default="localhost")
 DB_PORT = config("DB_PORT", default="27017")
 
+# Arquivo .env na raiz coloca o IP da máquina virtual.
+
 client = MongoClient(host=DB_HOST, port=int(DB_PORT))
 db = client.tech_news
 
@@ -12,10 +14,10 @@ def create_news(data):
     db.news.insert_many(data)
 
 
-def insert_or_update(notice):
+def insert_or_update(story):
     return (
         db.news.update_one(
-            {"url": notice["url"]}, {"$set": notice}, upsert=True
+            {"url": story["url"]}, {"$set": story}, upsert=True
         ).upserted_id
         is not None
     )
