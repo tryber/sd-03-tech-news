@@ -58,7 +58,7 @@ def get_resume(fetcher, url):
     shares_count = 0
     if shares_text:
         shares_count = int(get_only_numbers(shares_text))
-    comments = selector.css("#js-comments-btn::attr(data-count)").get()
+    comments = int(selector.css("#js-comments-btn::attr(data-count)").get())
     summary_html = selector.css(".tec--article__body p").get()
     if summary_html:
         summary = cleanhtml(summary_html)
