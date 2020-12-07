@@ -62,11 +62,10 @@ def scrape(fetcher, pages=1):
         # Atributos a serem parseados em cada URL
 
         for url in selector.css(URL_SELECTOR).getall():
-            print('Estamos na página', curr_page, 'URL', url)
+            # print('Estamos na página', curr_page, 'URL', url)
             news_sel = Selector(fetcher(url))
             news_dump.append(extract_content(news_sel, url))
 
         curr_page += 1
     create_news(news_dump)
     return news_dump
-    # print(f'Foram importadas {len(news_dump)} notícias')
