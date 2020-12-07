@@ -2,9 +2,12 @@ from tech_news.database import db, client
 import re
 # Suporte para RegExes e afins
 
+
 def search_by_title(title):
     results = []
-    for news in db.news.find({'title': {'$regex': re.compile(title, re.IGNORECASE)}}):
+    for news in db.news.find({'title': {
+        '$regex': re.compile(title, re.IGNORECASE)}
+    }):
         results.append((news['title'], news['url']))
     client.close()
     return results
@@ -25,7 +28,9 @@ def search_by_date(date):
 
 def search_by_source(source):
     results = []
-    for news in db.news.find({'sources': {'$regex':  re.compile(source, re.IGNORECASE)}}):
+    for news in db.news.find({'sources': {
+        '$regex':  re.compile(source, re.IGNORECASE)}
+    }):
         results.append((news['title'], news['url']))
     client.close()
     return results
@@ -33,7 +38,9 @@ def search_by_source(source):
 
 def search_by_category(category):
     results = []
-    for news in db.news.find({'categories': {'$regex':  re.compile(category, re.IGNORECASE)}}):
+    for news in db.news.find({'categories':
+        {'$regex':  re.compile(category, re.IGNORECASE)}
+    }):
         results.append((news['title'], news['url']))
     client.close()
     return results

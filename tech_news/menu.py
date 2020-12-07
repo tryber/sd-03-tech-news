@@ -1,7 +1,7 @@
 from tech_news.collector.importer import csv_importer
 from tech_news.collector.exporter import csv_exporter
 from tech_news.collector.scrapper import scrape, fetch_content
-from tech_news.analyzer.ratings import top_5_news, top_5_categories
+# from tech_news.analyzer.ratings import top_5_news, top_5_categories
 # Fazendo em apenas uma linha não passou no teste
 from tech_news.analyzer import search_engine
 import sys
@@ -62,12 +62,12 @@ def analyzer_menu():
     elif user_choice == 4:
         pages = input('Digite a categoria:')
         return search_engine.search_by_category(int(pages))
-    elif user_choice == 5:
-        return top_5_news()
-    elif user_choice == 6:
-        return top_5_categories()
-    elif user_choice == 7:
-        print('Encerrando script\n')
-        exit
+    # elif user_choice == 5:
+    #     return top_5_news()
+    # elif user_choice == 6:
+    #     return top_5_categories()
+    # elif user_choice == 7:
+    #     print('Encerrando script\n')
+    #     exit
     else:
         sys.stderr.write('Opção inválida\n')

@@ -5,7 +5,7 @@ t5news_pipeline = [
         "$add": ["$shares_count", "$comments_count"]
         }
     }},
-    {'$sort': {'interactions': -1,'title': 1}},
+    {'$sort': {'interactions': -1, 'title': 1}},
     {'$limit': 5}
 ]
 
