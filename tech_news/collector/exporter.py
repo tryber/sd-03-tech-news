@@ -30,7 +30,7 @@ def csv_exporter(filepath):
                 str(news["shares_count"]),
                 str(news["comments_count"]),
                 news["summary"],
-                ",".join(news["sources"]),
+                "".join(news["sources"]),
                 ",".join(news["categories"]),
             ]
             writer.writerow(output)
