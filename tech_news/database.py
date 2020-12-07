@@ -29,10 +29,13 @@ def search_news(query):
     return list(db.news.find(query))
 
 
+def search_news_aggregation(query):
+    return list(db.news.aggregate(query))
+
+
 def search_using_title(term):
     return list(db.news.find(
-        # {"title": {"$regex": f"^{term}$"}}, {"title": 1, "url": 1, "id": 0}
-        {"$regex": re.compile(term, re.IGNORECASE)}
+        {"title": {"$regex": f"^{term}$"}}, {"title": 1, "url": 1, "id": 0}
     ))
 
 
