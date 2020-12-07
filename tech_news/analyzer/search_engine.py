@@ -2,6 +2,7 @@ from tech_news.database import search_news
 from datetime import datetime
 import re
 
+
 def search_by_title(title):
     notices = search_news({
         "title": {'$regex':  f"^{ title }$", "$options": '-i'}
