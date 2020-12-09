@@ -5,11 +5,16 @@ import requests
 
 def fetch_content(url, timeout=3, delay=0.5):
     """Seu código deve vir aqui"""
-    sleep(delay)
-    res = requests.get(url, timeout=timeout)
-    if res.status_code != 200:
-        return ""
-    return res.text
+    # sleep(delay)
+    try:
+        res = requests.get(url, timeout=timeout)
+    except requests.ReadTimeout:
+        res = ""
+    finally:
+        if res == "" or res.status_code != 200:
+            return res
+        else:
+            return res.text
 
 
 def scrape(fetcher, pages=1):
@@ -23,4 +28,6 @@ def scrape(fetcher, pages=1):
 
 if __name__ == "__main__":
     # print(fetch_content('https://www.tecmundo.com.br/novidades'))
-    print(scrape(fetch_content, 1))
+    print(fetch_content('https://httpbin.org/delay/1'))
+    print(fetch_content('https://httpbin.org/delay/10'))
+    # print(scrape(fetch_content, 1))
