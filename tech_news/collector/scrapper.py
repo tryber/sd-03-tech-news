@@ -15,15 +15,14 @@ def get_title(selector):
     )
     return new
 
-def get_timestamp(text):
+# def get_timestamp(text):
+# def get_writer(text):
+# def get_shares_count(text):
+# def get_comments_count(text):
+# def get_summary(text):
+# def get_sources(text):
+# def get_categories(text):
 
-
-def get_writer(text)
-def get_shares_count(text)
-def get_comments_count(text)
-def get_summary(text)
-def get_sources(text)
-def get_categories(text)
 
 def fetch_content(url, timeout=3, delay=0.5):
     """Seu código deve vir aqui"""
@@ -57,4 +56,4 @@ if __name__ == "__main__":
     # print(fetch_content('https://httpbin.org/delay/1'))
     # print(fetch_content('https://httpbin.org/delay/10'))
     # print(scrape(fetch_content, 1))
-    
+    print('ok')
