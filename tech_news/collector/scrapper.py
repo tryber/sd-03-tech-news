@@ -30,4 +30,4 @@ if __name__ == "__main__":
     # print(fetch_content('https://www.tecmundo.com.br/novidades'))
     print(fetch_content('https://httpbin.org/delay/1'))
     print(fetch_content('https://httpbin.org/delay/10'))
-    # print(scrape(fetch_content, 1))
+    print(scrape(fetch_content, 1))
