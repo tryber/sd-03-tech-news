@@ -12,7 +12,7 @@ def fetch_content(url, timeout=3, delay=0.5):
         res = ""
     finally:
         if res == "" or res.status_code != 200:
-            return res
+            return ""
         else:
             return res.text
 
