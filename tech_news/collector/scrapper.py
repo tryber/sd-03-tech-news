@@ -16,25 +16,25 @@ def get_timestamp(selector):
 
 
 def get_writer(selector):
-    writer = selector.css(".tec--author__info__link::text").get()[1:-1]
+    writer = selector.css(".tec--author__info__link::text").get()
     return writer
 
 
 def get_shares_counter(selector):
-    shares = (
-        selector.css(".tec--toolbar__item::text")
-        .get()
-        .replace(" ", "")
-        .replace("Compartilharam", "")
-    )
-    return int(shares)
+    shares = selector.css(".tec--toolbar__item::text").get()
+    if shares is not None:
+        shares = shares.replace(" ", "").replace("Compartilharam", "")
+        return int(shares)
+    return int(0)
 
 
 def get_comments_count(selector):
     comments = selector.css(
         ".tec--toolbar__item button::attr(data-count)"
     ).get()
-    return int(comments)
+    if comments is not None:
+        return int(comments)
+    return int(0)
 
 
 def get_summary(selector):
@@ -55,7 +55,7 @@ def get_sources(selector):
 
 
 def get_categories(selector):
-    raw_categories = selector.css('#js-categories a::text').getall()
+    raw_categories = selector.css("#js-categories a::text").getall()
     categories = []
     for categorie in raw_categories:
         categories.append(categorie[1:-1])
@@ -96,18 +96,15 @@ def scrape(fetcher, pages=1):
     url = f"https://www.tecmundo.com.br/novidades?page={pages}"
     res = fetch_content(url)
     news_selector = Selector(text=res)
-    news = news_selector.css(".tec--card__title__link::attr(href)").getall()
-    # for new in news:
-    # new_info = fetch_content(news[0])
-    # get_info_selec = Selector(text=new_info)
-    # Chamar as funções pra criar o dicionar passando o seletor pra elas
+    raw_news = news_selector.css(
+        "article .tec--card__info h3 a::attr(href)"
+    ).getall()
+    news = []
+    for new in raw_news:
+        temp_new = mount_new(fetch_content, new)
+        news.append(temp_new)
     return news
 
 
 if __name__ == "__main__":
-    # # print(fetch_content('https://www.tecmundo.com.br/novidades'))
-    # print(fetch_content('https://httpbin.org/delay/1'))
-    # print(fetch_content('https://httpbin.org/delay/10'))
-    # print(scrape(fetch_content, 1))
-    url = "https://www.tecmundo.com.br/mobilidade-urbana-smart-cities/155000-musk-tesla-carros-totalmente-autonomos.htm"
-    print(mount_new(fetch_content, url))
+    print(scrape(fetch_content, 1))
