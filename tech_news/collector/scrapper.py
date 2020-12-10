@@ -49,7 +49,7 @@ def get_sources(selector):
     for source in raw_sources:
         if '"tec--badge"' in source:
             sources.append(
-                Selector(text=source).css(".tec--badge::text").get()[1:-1]
+                Selector(text=source).css(".tec--badge::text").get()
             )
     return sources
 
@@ -58,7 +58,7 @@ def get_categories(selector):
     raw_categories = selector.css("#js-categories a::text").getall()
     categories = []
     for categorie in raw_categories:
-        categories.append(categorie[1:-1])
+        categories.append(categorie)
     return categories
 
 
