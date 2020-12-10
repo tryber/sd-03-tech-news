@@ -93,18 +93,23 @@ def fetch_content(url, timeout=3, delay=0.5):
 
 def scrape(fetcher, pages=1):
     """Seu código deve vir aqui"""
-    url = f"https://www.tecmundo.com.br/novidades?page={pages}"
-    res = fetch_content(url)
-    news_selector = Selector(text=res)
-    raw_news = news_selector.css(
-        "article .tec--card__info h3 a::attr(href)"
-    ).getall()
+    news_links = []
+    for page in range(1, pages + 1):
+        url = f"https://www.tecmundo.com.br/novidades?page={page}"
+        res = fetch_content(url)
+        news_selector = Selector(text=res)
+        news = news_selector.css(
+            "article .tec--card__info h3 a::attr(href)"
+        ).getall()
+        for new in news:
+            news_links.append(new)
+
     news = []
-    for new in raw_news:
+    for new in news_links:
         temp_new = mount_new(fetch_content, new)
         news.append(temp_new)
     return news
 
 
 if __name__ == "__main__":
-    print(scrape(fetch_content, 1))
+    print(scrape(fetch_content, 2))
