@@ -38,7 +38,9 @@ def get_comments_count(selector):
 
 
 def get_summary(selector):
-    raw_summary = selector.css(".tec--article__body p *::text").getall()
+    raw_summary = selector.css(
+        ".tec--article__body p:first-child *::text"
+    ).getall()
     summary = "".join(raw_summary)
     return summary
 
@@ -93,21 +95,17 @@ def fetch_content(url, timeout=3, delay=0.5):
 
 def scrape(fetcher, pages=1):
     """Seu código deve vir aqui"""
-    news_links = []
+    news = []
     for page in range(1, pages + 1):
         url = f"https://www.tecmundo.com.br/novidades?page={page}"
-        res = fetch_content(url)
+        res = fetcher(url)
         news_selector = Selector(text=res)
-        news = news_selector.css(
+        link_news = news_selector.css(
             "article .tec--card__info h3 a::attr(href)"
         ).getall()
-        for new in news:
-            news_links.append(new)
-
-    news = []
-    for new in news_links:
-        temp_new = mount_new(fetch_content, new)
-        news.append(temp_new)
+        for new in link_news:
+            temp_new = mount_new(fetcher, new)
+            news.append(temp_new)
     return news
 
 
