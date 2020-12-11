@@ -1,3 +1,4 @@
+
 from pymongo import MongoClient
 from decouple import config
 
@@ -27,3 +28,7 @@ def find_news():
 
 def search_news(query):
     return list(db.news.find(query))
+
+
+def get_collection():
+    return db.news
