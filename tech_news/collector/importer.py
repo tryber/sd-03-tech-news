@@ -10,17 +10,12 @@ def csv_importer(filepath):
     if not exists:
         raise ValueError("Arquivo file_not_exist.csv não encontrado")
     with open(filepath) as file:
-        raw_csv = csv.reader(file, delimiter=";", quotechar='"')
-        header, *data = raw_csv
-        data_len, header_len = len(data), len(header)
-        news, temp = [], {}
-        for i in range(data_len):
-            for j in range(header_len):
-                temp[header[j]] = data[i][j]
-            news.append(temp)
-            temp = {}
+        raw_csv = csv.DictReader(file, delimiter=";", quotechar='"')
+        news = []
+        for new in raw_csv:
+            news.append(new)
         return news
 
 
 if __name__ == "__main__":
-    print(csv_importer('./correc.csv'))
+    print(csv_importer('./correct.csv'))
