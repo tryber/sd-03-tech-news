@@ -1,8 +1,9 @@
-from tech_news.database import search_news
+from pymongo import MongoClient
 import re
 
-
-news = search_news({})
+client = MongoClient()
+db = client.tech_news
+news = list(db.news.find({}, {"_id": False}))
 
 
 def search_by_title(title):
