@@ -2,12 +2,10 @@ from tech_news.database import search_news
 import re
 
 
-news = search_news({})
-
-
 def search_by_title(title):
     """Seu código deve vir aqui"""
     local_news = []
+    news = search_news({})
     for new in news:
         if title.lower() in new["title"].lower():
             local_news.append(tuple([new["title"], new["url"]]))
@@ -20,6 +18,7 @@ def search_by_date(date):
     if regex is None:
         raise ValueError("Data inválida")
     local_news = []
+    news = search_news({})
     for new in news:
         if new["timestamp"][:-9] == date:
             local_news.append(tuple([new["title"], new["url"]]))
@@ -29,6 +28,7 @@ def search_by_date(date):
 def search_by_source(source):
     """Seu código deve vir aqui"""
     local_news = []
+    news = search_news({})
     for new in news:
         if source.lower() in [source.lower() for source in new["sources"]]:
             local_news.append(tuple([new["title"], new["url"]]))
@@ -38,6 +38,7 @@ def search_by_source(source):
 def search_by_category(category):
     """Seu código deve vir aqui"""
     local_news = []
+    news = search_news({})
     for new in news:
         if category.lower() in [
             category.lower() for category in new["categories"]
