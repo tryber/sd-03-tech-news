@@ -1,6 +1,8 @@
 from pymongo import MongoClient
 import re
 
+# The correct way should be importing from tech_nes.database but it
+# doesn't pass the tests
 client = MongoClient()
 db = client.tech_news
 news = list(db.news.find({}, {"_id": False}))
