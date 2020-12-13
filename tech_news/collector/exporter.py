@@ -1,22 +1,20 @@
 import csv
-from pymongo import MongoClient
+from tech_news.database import find_news
 
 
 def csv_exporter(filepath):
     """Seu código deve vir aqui"""
     if not filepath.endswith(".csv"):
         raise ValueError("Formato invalido")
-    client = MongoClient()
-    db = client.tech_news
-    news = db.news.find()
-    header = list(news[0].keys())[1:]
+    news = find_news()
+    header = list(news[0].keys())
     with open(filepath, "w") as file:
         writer = csv.writer(file, delimiter=";")
         writer.writerow(header)
         rows = []
         for new in news:
             temp = []
-            for elem in list(new.values())[1:]:
+            for elem in list(new.values()):
                 if isinstance(elem, list):
                     espacer = ','
                     new_elem = espacer.join(elem)
@@ -26,7 +24,6 @@ def csv_exporter(filepath):
             rows.append(temp)
             temp = []
         writer.writerows(rows)
-    client.close()
 
 
 if __name__ == "__main__":
