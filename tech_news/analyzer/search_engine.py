@@ -48,9 +48,6 @@ def search_by_category(category):
 
 
 if __name__ == "__main__":
-    for new in news:
-        print(new)
-
     print(search_by_title("VAMOSCOMTUDO"))
     print(search_by_date("2020-11-23"))
     print(search_by_source("ResetEra"))
