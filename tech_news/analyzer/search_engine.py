@@ -1,11 +1,8 @@
-from pymongo import MongoClient
+from tech_news.database import search_news
 import re
 
-# The correct way should be importing from tech_nes.database but it
-# doesn't pass the tests
-client = MongoClient()
-db = client.tech_news
-news = list(db.news.find({}, {"_id": False}))
+
+news = search_news({})
 
 
 def search_by_title(title):
