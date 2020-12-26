@@ -5,7 +5,11 @@ def top_5_news():
     result = db.find_news()
     if result == []:
         return result
+    return [(result[0]["title"], result[0]["url"])]
 
 
 def top_5_categories():
-    """Seu código deve vir aqui"""
+    result = db.find_news()
+    if result == []:
+        return result
+    return [(result)]
