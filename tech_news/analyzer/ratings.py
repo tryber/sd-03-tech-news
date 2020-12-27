@@ -21,7 +21,31 @@ def top_5_news():
 
 
 def top_5_categories():
-    result = db.find_news()
-    if result == []:
-        return result
-    return [(result)]
+    result = client.tech_news.news.aggregate([
+      {
+        # https://docs.mongodb.com/manual/reference/operator/aggregation/unwind/index.html
+        "$unwind": "$categories",
+      },
+      {
+        "$group": {
+          "_id": "$categories",
+          "allCategories": {
+            "$sum": 1,
+          }
+        },
+      },
+      {
+        "$sort": {
+          "allCategories": -1,
+          "_id": 1,
+        }
+      },
+      {
+        "$limit": 5,
+      }
+    ]) or []
+    result_in_list = [
+        item["_id"] for item in result
+    ]
+    return result_in_list
+
