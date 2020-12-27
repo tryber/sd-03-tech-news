@@ -1,4 +1,3 @@
-import tech_news.database as db
 from tech_news.database import client
 
 
