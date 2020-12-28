@@ -1,7 +1,6 @@
 import sys
 
 
-
 def collector_menu():
     print("Selecione uma das opções a seguir:\n " +
           "1 - Importar notícias a partir de um arquivo CSV;\n " +
