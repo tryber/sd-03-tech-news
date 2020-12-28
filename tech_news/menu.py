@@ -2,7 +2,6 @@ import sys
 from tech_news.collector.importer import csv_importer
 from tech_news.database import create_news
 from tech_news.collector.exporter import csv_exporter
-from tech_news.collector.scrapper import scrape
 
 
 def collector_menu():
