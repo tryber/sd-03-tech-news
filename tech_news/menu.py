@@ -13,8 +13,12 @@ def collector_menu():
     user_input = input()
     if first_input_step(user_input) == "Opção inválida\n":
         sys.stderr.write("Opção inválida\n")
+    elif first_input_step(user_input) == "Encerrando script\n":
+        print("Encerrando script\n")        
     else:
-        return first_input_step(user_input)
+        first_input_step(user_input)    
+        user_input2 = input()
+        second_function_step(user_input2)
 
 
 def analyzer_menu():
@@ -33,14 +37,18 @@ def first_input_step(argument):
     if result == "Opção inválida\n":
         return "Opção inválida\n"
     else:
-        print(result)
+        return result
 
 
 def second_function_step(argument):
     switcher = {
         "1": import_from_csv_and_save_in_database(argument)
     }
-    return (switcher.get(argument))
+    result = switcher.get(argument, "Opção inválida\n")
+    if result == "Opção inválida\n":
+        return "Opção inválida\n"
+    else:
+        return result
 
 
 def import_from_csv_and_save_in_database(argument):
