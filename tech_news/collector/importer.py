@@ -10,19 +10,18 @@ def csv_importer(filepath):
         with open(filepath) as file:
             file_reader = csv.reader(file, delimiter=";")
             header, *data = file_reader
-            for list in data:
-                for info in data:
-                    news_list.append({
-                        "url": info[0],
-                        "title": info[1],
-                        "timestamp": info[2],
-                        "writer": info[3],
-                        "shares_count": info[4],
-                        "comments_count": info[5],
-                        "summary": info[6],
-                        "sources": info[7],
-                        "categories": info[8],
-                    })
+            for info in data:
+                news_list.append({
+                    "url": info[0],
+                    "title": info[1],
+                    "timestamp": info[2],
+                    "writer": info[3],
+                    "shares_count": info[4],
+                    "comments_count": info[5],
+                    "summary": info[6],
+                    "sources": info[7],
+                    "categories": info[8],
+                })
         return news_list
     except FileNotFoundError:
         raise ValueError("Arquivo file_not_exist.csv não encontrado")
