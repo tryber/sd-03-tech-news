@@ -1,6 +1,8 @@
 import sys
 from tech_news.collector.importer import csv_importer
 from tech_news.database import create_news
+from tech_news.collector.exporter import csv_exporter
+from tech_news.collector.scrapper import scrape
 
 
 def collector_menu():
@@ -42,7 +44,8 @@ def first_input_step(argument):
 
 def second_function_step(argument):
     switcher = {
-        "1": import_from_csv_and_save_in_database(argument)
+        "1": import_from_csv_and_save_in_database(argument),
+        "2": csv_exporter(argument),
     }
     result = switcher.get(argument, "Opção inválida\n")
     if result == "Opção inválida\n":
