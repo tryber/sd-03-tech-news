@@ -4,6 +4,7 @@ from tech_news.database import create_news
 from tech_news.collector.exporter import csv_exporter
 from tech_news.collector.scrapper import scrape, fetch_content
 
+
 def collector_menu():
     print("Selecione uma das opções a seguir:\n " +
           "1 - Importar notícias a partir de um arquivo CSV;\n " +
