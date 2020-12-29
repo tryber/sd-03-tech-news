@@ -3,6 +3,12 @@ from tech_news.collector.importer import csv_importer
 from tech_news.database import create_news
 from tech_news.collector.exporter import csv_exporter
 from tech_news.collector.scrapper import scrape, fetch_content
+from tech_news.analyzer.search_engine import (search_by_title,
+                                              search_by_date,
+                                              search_by_source,
+                                              search_by_category
+                                              )
+from tech_news.analyzer.ratings import top_5_categories, top_5_news
 
 
 def collector_menu():
@@ -37,6 +43,10 @@ def analyzer_menu():
         sys.stderr.write("Opção inválida\n")
     elif first_input_step_analyzer(user_input) == "Encerrando script\n":
         print("Encerrando script\n")
+    else:
+        print(first_input_step_analyzer(user_input))
+        user_input2 = input()
+        print(second_function_step_analyzer(user_input, user_input2))
 
 
 def first_input_step_collector(argument):
@@ -74,6 +84,9 @@ def first_input_step_analyzer(argument):
          "1": "January",
          "2": "February",
          "3": "March",
+         "4": "category",
+         "5": "top noticias",
+         "6": "top categorias",
          "7": "Encerrando script\n"
     }
     result = switcher.get(argument, "Opção inválida\n")
@@ -81,3 +94,19 @@ def first_input_step_analyzer(argument):
         return "Opção inválida\n"
     else:
         return result
+
+
+def second_function_step_analyzer(argument, argument2):
+    if argument == "1":
+        return search_by_title(argument2)
+    elif argument == "2":
+        return search_by_date(argument2)
+    elif argument == "3":
+        return search_by_source(argument2)
+    elif argument == "4":
+        return search_by_category(argument2)
+    elif argument == "5":
+        return top_5_news(argument2)
+    elif argument == "6":
+        return top_5_categories(argument2)
+    
