@@ -8,7 +8,6 @@ from tech_news.analyzer.search_engine import (search_by_title,
                                               search_by_source,
                                               search_by_category
                                               )
-from tech_news.analyzer.ratings import top_5_categories, top_5_news
 
 
 def collector_menu():
@@ -105,8 +104,3 @@ def second_function_step_analyzer(argument, argument2):
         return search_by_source(argument2)
     elif argument == "4":
         return search_by_category(argument2)
-    elif argument == "5":
-        return top_5_news(argument2)
-    elif argument == "6":
-        return top_5_categories(argument2)
-    
