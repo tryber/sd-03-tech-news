@@ -48,7 +48,7 @@ def second_function_step(argument, argument2):
     elif argument == "2":
         return csv_exporter(argument2)
     elif argument == "3":
-        return scrape(fetch_content, argument2)
+        return create_news(scrape(fetcher=fetch_content, pages=1))
 
 
 def import_from_csv_and_save_in_database(argument):
