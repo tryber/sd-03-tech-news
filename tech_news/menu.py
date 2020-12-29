@@ -13,14 +13,14 @@ def collector_menu():
           "4 - Sair."
           )
     user_input = input()
-    if first_input_step(user_input) == "Opção inválida\n":
+    if first_input_step_collector(user_input) == "Opção inválida\n":
         sys.stderr.write("Opção inválida\n")
-    elif first_input_step(user_input) == "Encerrando script\n":
+    elif first_input_step_collector(user_input) == "Encerrando script\n":
         print("Encerrando script\n")
     else:
-        print(first_input_step(user_input))
+        print(first_input_step_collector(user_input))
         user_input2 = input()
-        print(second_function_step(user_input, user_input2))
+        print(second_function_step_collector(user_input, user_input2))
 
 
 def analyzer_menu():
@@ -32,9 +32,14 @@ def analyzer_menu():
           "5 - Listar top 5 notícias;\n " +
           "6 - Listar top 5 categorias;\n " +
           "7 - Sair.")
+    user_input = input()
+    if first_input_step_analyzer(user_input) == "Opção inválida\n":
+        sys.stderr.write("Opção inválida\n")
+    elif first_input_step_analyzer(user_input) == "Encerrando script\n":
+        print("Encerrando script\n")
 
 
-def first_input_step(argument):
+def first_input_step_collector(argument):
     # https://jaxenter.com/implement-switch-case-statement-python-138315.html
     switcher = {
          "1": "January",
@@ -49,7 +54,7 @@ def first_input_step(argument):
         return result
 
 
-def second_function_step(argument, argument2):
+def second_function_step_collector(argument, argument2):
     if argument == "1":
         return import_from_csv_and_save_in_database(argument2)
     elif argument == "2":
@@ -61,3 +66,18 @@ def second_function_step(argument, argument2):
 def import_from_csv_and_save_in_database(argument):
     data_from_csv = csv_importer(argument)
     create_news(data_from_csv)
+
+
+def first_input_step_analyzer(argument):
+    # https://jaxenter.com/implement-switch-case-statement-python-138315.html
+    switcher = {
+         "1": "January",
+         "2": "February",
+         "3": "March",
+         "7": "Encerrando script\n"
+    }
+    result = switcher.get(argument, "Opção inválida\n")
+    if result == "Opção inválida\n":
+        return "Opção inválida\n"
+    else:
+        return result
