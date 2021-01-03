@@ -1,12 +1,11 @@
 import requests
-import time
+from time import sleep
 
 
 def fetch_content(url, timeout=3, delay=0.5):
-    time.sleep(delay)
     try:
         response = requests.get(url, timeout=timeout)
-        response.raise_for_status()
+        sleep(delay)
     except (requests.exceptions.HTTPError, requests.exceptions.ReadTimeout):
         return ''
     else:
