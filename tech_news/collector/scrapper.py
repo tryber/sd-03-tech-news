@@ -42,7 +42,6 @@ def format_new_object(url, selector):
 def scrape(fetcher=fetch_content, pages=1):
     news_list = []
     for page in range(1, pages + 1):
-        print(page)
         response_news = fetcher(
             f"https://www.tecmundo.com.br/novidades?page={page}"
         )
