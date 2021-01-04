@@ -1,5 +1,6 @@
 import datetime
-from tech_news.database import search_news, find_news
+import re
+from tech_news.database import search_news
 
 
 def search_by_title(title):
@@ -25,14 +26,25 @@ def search_by_date(date):
         return tuples_list
 
 
+# Referência utilização de regex - Python:
+# https://docs.python.org/pt-br/3.8/howto/regex.html
+
+
 def search_by_source(source):
     tuples_list = []
-    print(find_news())
-    data = search_news({"sources": {"$regex": source, "$options": "i"}})
+    data = search_news(
+        {"sources": {"$all": [re.compile(source, re.IGNORECASE)]}}
+    )
     for new in data:
         tuples_list.append((new["title"], new["url"]))
     return tuples_list
 
 
 def search_by_category(category):
-    """Seu código deve vir aqui"""
+    tuples_list = []
+    data = search_news(
+        {"categories": {"$all": [re.compile(category, re.IGNORECASE)]}}
+    )
+    for new in data:
+        tuples_list.append((new["title"], new["url"]))
+    return tuples_list
