@@ -1,6 +1,21 @@
 import csv
 
 
+def validate_header(header):
+    if (
+        "url"
+        and "title"
+        and "timestamp"
+        and "writer"
+        and "shares_count"
+        and "comments_count"
+        and "summary"
+        and "sources"
+        and "categories" not in header
+    ):
+        raise ValueError("Formato invalido")
+
+
 def csv_importer(filepath):
     csv_list = []
     try:
@@ -9,18 +24,7 @@ def csv_importer(filepath):
         with open(filepath) as file:
             content = csv.reader(file, delimiter=";", quotechar='"')
             header, *data = content
-            if (
-                "url"
-                and "title"
-                and "timestamp"
-                and "writer"
-                and "shares_count"
-                and "comments_count"
-                and "summary"
-                and "sources"
-                and "categories" not in header
-            ):
-                raise ValueError("Formato invalido")
+            validate_header(header)
             for info in data:
                 new_obj = {}
                 for i in range(len(header)):
