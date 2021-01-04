@@ -28,7 +28,7 @@ def csv_exporter(filepath):
             shares_count = new["shares_count"]
             comments_count = new["comments_count"]
             summary = new["summary"]
-            sources = "".join(new["sources"])
+            sources = ",".join(new["sources"])
             categories = ",".join(new["categories"])
             row_new = [
                 url,
