@@ -26,4 +26,20 @@ def top_5_news():
 
 
 def top_5_categories():
-    """Seu código deve vir aqui"""
+    categories_list = []
+    data = aggregate_news(
+        [
+            {"$unwind": "$categories"},
+            {
+                "$group": {
+                    "_id": "$categories",
+                    "count": {"$sum": 1},
+                }
+            },
+            {"$sort": {"count": -1, "_id": 1}},
+            {"$limit": 5},
+        ]
+    )
+    for new in data:
+        categories_list.append(new["_id"])
+    return categories_list
