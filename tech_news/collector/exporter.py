@@ -5,7 +5,7 @@ from tech_news.database import find_news
 def csv_exporter(filepath):
     if not filepath.endswith(".csv"):
         raise ValueError("Formato invalido")
-    with open(filepath) as file:
+    with open(filepath, "w") as file:
         write_csv = csv.writer(file, delimiter=";", quotechar='"')
         headers = [
             "url",
@@ -19,8 +19,8 @@ def csv_exporter(filepath):
             "categories",
         ]
         write_csv.writerow(headers)
-        print(find_news())
         for new in find_news():
+            print(new)
             url = new["url"]
             title = new["title"]
             timestamp = new["timestamp"]

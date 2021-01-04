@@ -32,7 +32,7 @@ def csv_importer(filepath):
     try:
         if not filepath.endswith(".csv"):
             raise ValueError("Formato invalido")
-        with open(filepath) as file:
+        with open(filepath, "r") as file:
             content = csv.reader(file, delimiter=";", quotechar='"')
             header, *data = content
             validate_header(header)
