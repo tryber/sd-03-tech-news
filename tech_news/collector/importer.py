@@ -16,6 +16,17 @@ def validate_header(header):
         raise ValueError("Formato invalido")
 
 
+def format_new_object(data, header):
+    csv_list = []
+    for info in data:
+        new_obj = {}
+        for i in range(len(header)):
+            key = header[i]
+            new_obj[key] = info[i]
+        csv_list.append(new_obj)
+    return csv_list
+
+
 def csv_importer(filepath):
     csv_list = []
     try:
@@ -25,12 +36,7 @@ def csv_importer(filepath):
             content = csv.reader(file, delimiter=";", quotechar='"')
             header, *data = content
             validate_header(header)
-            for info in data:
-                new_obj = {}
-                for i in range(len(header)):
-                    key = header[i]
-                    new_obj[key] = info[i]
-                csv_list.append(new_obj)
+            csv_list = format_new_object(data, header)
     except FileNotFoundError:
         raise ValueError("Arquivo file_not_exist.csv não encontrado")
     else:
