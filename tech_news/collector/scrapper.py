@@ -42,21 +42,36 @@ def scrape(fetcher, pages=1):
             "url": 
                 url,
             "title":
-                news.css(".tec--card__title *::text").get(),
+                news.css(".tec--card__title *::text")
+                .get(),
             "timestamp":
-                news.css(".tec--timestamp__item.z--font-semibold *::text").get().replace('/', '-'),
+                news.css(".tec--timestamp__item.z--font-semibold *::text")
+                .get()
+                .replace('/', '-'),
             "writer":
-                inner_selector.css('.tec--author__info__link *::text').get(),
+                inner_selector.css('.tec--author__info__link *::text')
+                .get(),
             "shares_count":
-                extract_quantity(inner_selector.css('.z--container .tec--toolbar__item *::text').re('\d')),
+                extract_quantity(
+                    inner_selector
+                    .css('.z--container .tec--toolbar__item *::text'
+                ).re('\d')),
             "comments_count":
-                extract_quantity(inner_selector.css('#js-comments-btn *::text').re('\d')),
+                extract_quantity(
+                    inner_selector.css('#js-comments-btn *::text')
+                    .re('\d')
+                ),
             "summary":
-                ''.join(inner_selector.css('.tec--article__body p:first-child *::text').getall()),
+                ''.join(
+                    inner_selector.css('.tec--article__body p:first-child *::text')
+                    .getall()
+                ),
             "sources":
-                inner_selector.css('[class="tec--badge"]::text').getall(),
+                inner_selector.css('[class="tec--badge"]::text')
+                .getall(),
             "categories":
-                inner_selector.css('[class="tec--badge tec--badge--primary"]::text').getall()
+                inner_selector.css('[class="tec--badge tec--badge--primary"]::text')
+                .getall()
         })
 
     print(news_list)
