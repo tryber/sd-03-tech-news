@@ -34,7 +34,6 @@ def scrape(fetcher, pages=1):
     news_items = fetcher("https://www.tecmundo.com.br/novidades")
     news_list = []
 
-
     for news in news_items.css(".tec--list__item"):
         url = news.css(".tec--card__thumb a::attr(href)").get()
         inner_selector = Selector(requests.get(url).text)
@@ -54,8 +53,8 @@ def scrape(fetcher, pages=1):
             "shares_count":
                 extract_quantity(
                     inner_selector
-                    .css('.z--container .tec--toolbar__item *::text'
-                ).re('\d')),
+                    .css('.z--container .tec--toolbar__item *::text')
+                    .re('\d')),
             "comments_count":
                 extract_quantity(
                     inner_selector.css('#js-comments-btn *::text')
@@ -63,17 +62,20 @@ def scrape(fetcher, pages=1):
                 ),
             "summary":
                 ''.join(
-                    inner_selector.css('.tec--article__body p:first-child *::text')
+                    inner_selector
+                    .css('.tec--article__body p:first-child *::text')
                     .getall()
                 ),
             "sources":
                 inner_selector.css('[class="tec--badge"]::text')
                 .getall(),
             "categories":
-                inner_selector.css('[class="tec--badge tec--badge--primary"]::text')
+                inner_selector
+                .css('[class="tec--badge tec--badge--primary"]::text')
                 .getall()
         })
 
     print(news_list)
+
 
 scrape(fetch_content)
