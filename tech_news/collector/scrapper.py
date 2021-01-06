@@ -1,10 +1,5 @@
-# import ratelimit
-
-# from ratelimit import limits
-
 import time
 import requests
-# import parsel
 
 from parsel import Selector
 
@@ -22,12 +17,15 @@ def extract_quantity(arg):
 def fetch_content(url, timeout=3, delay=0.5):
     response = requests.get(url, timeout=timeout)
     status_code = response.status_code
-    print(f'status code {status_code}')
     if(status_code != 200):
         return ''
+
     selector = Selector(text=response.text)
     time.sleep(delay)
+    print(selector.get())
     return selector
+
+# fetch_content("https://app.betrybe.com/")
 
 
 def scrape(fetcher, pages=1):
@@ -78,4 +76,4 @@ def scrape(fetcher, pages=1):
     print(news_list)
 
 
-scrape(fetch_content)
+# scrape(fetch_content)
