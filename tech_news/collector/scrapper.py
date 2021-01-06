@@ -15,7 +15,7 @@ def extract_quantity(arg):
             return int(arg[0])
         else:
             return int(arg)
-    else: 
+    else:
         return False
 
 
@@ -38,7 +38,7 @@ def scrape(fetcher, pages=1):
         url = news.css(".tec--card__thumb a::attr(href)").get()
         inner_selector = Selector(requests.get(url).text)
         news_list.append({
-            "url": 
+            "url":
                 url,
             "title":
                 news.css(".tec--card__title *::text")
@@ -54,11 +54,11 @@ def scrape(fetcher, pages=1):
                 extract_quantity(
                     inner_selector
                     .css('.z--container .tec--toolbar__item *::text')
-                    .re('\d')),
+                    .re('\\d')),
             "comments_count":
                 extract_quantity(
                     inner_selector.css('#js-comments-btn *::text')
-                    .re('\d')
+                    .re('\\d')
                 ),
             "summary":
                 ''.join(
