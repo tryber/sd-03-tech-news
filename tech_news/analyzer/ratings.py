@@ -1,4 +1,5 @@
 from tech_news.database import search_news
+from collections import Counter
 from pprint import pprint
 
 
@@ -12,7 +13,7 @@ TEST_NEWS = [
         "comments_count": 1,
         "summary": "Sumario da noticia_1",
         "sources": ["Fonte_1"],
-        "categories": ["PC_1", "Console_1"],
+        "categories": ["acao", "comedia"],
     },
     {
         "url": "https://www.tecmundo.com.br/noticia_2.htm",
@@ -23,7 +24,7 @@ TEST_NEWS = [
         "comments_count": 1,
         "summary": "Sumario da noticia_2",
         "sources": ["Fonte_2"],
-        "categories": ["PC_2", "Console_2"],
+        "categories": ["acao", "drama"],
     },
     {
         "url": "https://www.tecmundo.com.br/noticia_3.htm",
@@ -34,7 +35,7 @@ TEST_NEWS = [
         "comments_count": 1,
         "summary": "Sumario da noticia_3",
         "sources": ["Fonte_3"],
-        "categories": ["PC_3", "Console_3"],
+        "categories": ["aventura", "terror"],
     },
     {
         "url": "https://www.tecmundo.com.br/noticia_4.htm",
@@ -45,7 +46,7 @@ TEST_NEWS = [
         "comments_count": 1,
         "summary": "Sumario da noticia_4",
         "sources": ["Fonte_4"],
-        "categories": ["PC_4", "Console_4"],
+        "categories": ["aventura", "2d"],
     },
     {
         "url": "https://www.tecmundo.com.br/noticia_5.htm",
@@ -56,7 +57,7 @@ TEST_NEWS = [
         "comments_count": 1,
         "summary": "Sumario da noticia_5",
         "sources": ["Fonte_5"],
-        "categories": ["PC_5", "Console_5"],
+        "categories": ["terror", "simulacao"],
     },
     {
         "url": "https://www.tecmundo.com.br/noticia_6.htm",
@@ -67,7 +68,7 @@ TEST_NEWS = [
         "comments_count": 1,
         "summary": "Sumario da noticia_6",
         "sources": ["Fonte_6"],
-        "categories": ["PC_6", "Console_6"],
+        "categories": ["terror", "aventura"],
     },
 ]
 
@@ -91,15 +92,12 @@ def top_5_news():
 def top_5_categories():
     """Seu código deve vir aqui"""
     top_categories = []
-    all_categories = dict()
     news = search_news({})
     for new in news:
         for categorie in new["categories"]:
-            if categorie not in all_categories:
-                all_categories[categorie] = 1
-            else:
-                all_categories[categorie] += 1
-    top_categories = sorted([categorie for categorie in all_categories])
+            top_categories.append(categorie)
+    categories_unsorted = Counter(sorted(top_categories))
+    top_categories = [key for key, _ in categories_unsorted.most_common()]
     return top_categories[:5]
 
 
