@@ -84,3 +84,5 @@ def scrape(fetcher, pages=1):
                     .getall()
             })
     return news_list
+
+print(scrape(fetch_content))
