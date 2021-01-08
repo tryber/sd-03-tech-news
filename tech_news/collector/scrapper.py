@@ -1,6 +1,7 @@
 import time
 import requests
 
+from tech_news.database import create_news
 from parsel import Selector
 
 
@@ -11,7 +12,7 @@ def extract_quantity(arg):
         else:
             return int(arg)
     else:
-        return False
+        return 0
 
 
 def sleep(delay):
@@ -86,4 +87,5 @@ def scrape(fetcher, pages=1):
 
 
 if __name__ == "__main__":
-    print(scrape(fetch_content))
+    news_list = scrape(fetch_content)
+    create_news(news_list)
