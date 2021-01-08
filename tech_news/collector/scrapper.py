@@ -1,5 +1,6 @@
 import requests
 from time import sleep
+from parsel import Selector
 
 
 def fetch_content(url, timeout=3, delay=0.5):
@@ -15,5 +16,46 @@ def fetch_content(url, timeout=3, delay=0.5):
         return response.text
 
 
+def get_info(fetcher, url):
+    response = fetcher(url=url)
+    selector = Selector(text=response)
+    data = {}
+
+    data["url"] = url
+    data["text"] = selector.css("tec--article__header__title::text").get()
+    data["timestamp"] = selector.css(
+        "tec--timestamp__item time::attr(datetime"
+    ).get()
+    data["writer"] = selector.css("tec--author__info__link::text").get()
+    shares_count = (
+        selector.css("tec--toolbar__item::text").re_first(r"\d+") or "0"
+    )
+    data["shares-count"] = int(shares_count)
+    comments_count = (
+        selector.css("tec--toolbar__item button::text").re_first(r"\d+") or "0"
+    )
+    data["comments_count"] = int(comments_count)
+    data["summary"] = selector.css(
+        ".tec--article__body p:first-child *::text"
+    ).get()
+    data["sources"] = selector.css("a.tec--badge").getall()
+    data["categories"] = selector.css("a.tec--badge--primary").getall()
+
+    return data
+
+
 def scrape(fetcher, pages=1):
-    """Seu código deve vir aqui"""
+    BASE_URL = "https://www.tecmundo.com.br/novidades"
+    news = []
+    for page in range(1, pages + 1):
+        url = f"{BASE_URL}?page={page}"
+        response = fetcher(url)
+        selector = Selector(text=response)
+        news_link_list = selector.css(
+            ".tec--list__item .tec--card__title__link::attr(href)"
+        ).getall()
+        for link in news_link_list:
+            new = get_info(fetcher, link)
+            news.append(new)
+
+    return news
