@@ -39,7 +39,6 @@ def test_validar_scrape_default_retorna_a_primeira_pagina():
 
     assert len(scrape(fetcher=fetcher)) == 20
     notices = scrape(fetcher=fetcher)
-    print(notices)
     assert notices[0] == {
         "url": "https://www.tecmundo.com.br/voxel/204798-xbox-series-x-lista-jogos-otimizados-divulgada-mes.htm",
         "title": "Nova York vai proibir venda de carros à gasolina em 2035",

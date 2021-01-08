@@ -45,17 +45,16 @@ def scrape(fetcher, pages=1):
 
         for news in news_items.css(".tec--list__item"):
             url = news.css(".tec--card__thumb a::attr(href)").get()
-            inner_selector = Selector(requests.get(url).text)
+            inner_selector = Selector(text=fetcher(url))
             news_list.append({
                 "url":
                     url,
                 "title":
-                    news.css(".tec--card__title *::text")
+                    inner_selector.css(".tec--article__header__title *::text")
                     .get(),
                 "timestamp":
-                    news.css(".tec--timestamp__item.z--font-semibold *::text")
-                    .get()
-                    .replace('/', '-'),
+                    inner_selector.css("time::attr(datetime)")
+                    .get(),
                 "writer":
                     inner_selector.css('.tec--author__info__link *::text')
                     .get(),
@@ -85,4 +84,6 @@ def scrape(fetcher, pages=1):
             })
     return news_list
 
-print(scrape(fetch_content))
+
+if __name__ == "__main__":
+    print(scrape(fetch_content))
