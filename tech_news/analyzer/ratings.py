@@ -19,4 +19,3 @@ def top_5_categories():
 if __name__ == "__main__":
     print(top_5_news())
     print(top_5_categories())
-    
