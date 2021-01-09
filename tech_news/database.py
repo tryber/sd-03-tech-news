@@ -72,4 +72,3 @@ def fetch_top5_categories():
             }
         ]
     ))
-
