@@ -123,3 +123,9 @@ def analyzer_menu():
         analyzer_options_handler(option)
     except KeyError:
         return eprint('Opção inválida')
+
+# def create_news(function, **kwargs):
+#     query_input = input()
+#     if (kwargs["fetcher"]):
+#         return function(fetcher=kwargs["fetcher"], pages=int(query_input))
+#     return function(query_input)
