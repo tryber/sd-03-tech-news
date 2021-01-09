@@ -18,7 +18,7 @@ def header_checker(headers):
         raise ValueError('Headers invalidos')
 
 
-def csv_importer(filepath):
+def csv_importer(filepath, fetcher=dict_fetcher):
     if not re.search('.csv', filepath):
         raise ValueError('Formato invalido')
     try:
@@ -33,7 +33,7 @@ def csv_importer(filepath):
             filename = re.search(r'\/(.*.csv)', filepath).group(1)
             raise ValueError(f'Arquivo {filename} não encontrado')
     else:
-        return dict_fetcher(data, headers)
+        return fetcher(data, headers)
 
 
 if __name__ == '__main__':
