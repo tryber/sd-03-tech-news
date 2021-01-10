@@ -3,4 +3,4 @@ def top_5_news():
 
 
 def top_5_categories():
-    """Seu código deve vir aqui"""
+    """Seu código deve vir aqu"""
