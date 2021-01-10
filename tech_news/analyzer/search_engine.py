@@ -40,4 +40,11 @@ def search_by_source(source):
 
 
 def search_by_category(category):
-    """Seu código deve vir aqui"""
+    try:
+        regex = re.compile(category, re.IGNORECASE)
+        data = search_news({"categories": {"$all": [regex]}})
+        formated_data = [(doc["title"], doc["url"]) for doc in data]
+    except KeyError:
+        return []
+    else:
+        return formated_data
