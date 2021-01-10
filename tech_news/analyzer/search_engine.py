@@ -38,5 +38,6 @@ def search_by_source(source):
     else:
         return formated_data
 
+
 def search_by_category(category):
     """Seu código deve vir aqui"""
