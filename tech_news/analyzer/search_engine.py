@@ -1,5 +1,16 @@
+import re
+from tech_news.database import search_news
+
+
 def search_by_title(title):
-    """Seu código deve vir aqui"""
+    try:
+        regex = re.compile(title, re.IGNORECASE)
+        data = search_news({"title": {"$regex": regex}})
+        formated_data = [(doc["title"], doc["url"]) for doc in data]
+    except KeyError:
+        return []
+    else:
+        return formated_data
 
 
 def search_by_date(date):
