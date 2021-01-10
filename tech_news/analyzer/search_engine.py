@@ -29,8 +29,14 @@ def search_by_date(date):
 
 
 def search_by_source(source):
-    """Seu código deve vir aqui"""
-
+    try:
+        regex = re.compile(source, re.IGNORECASE)
+        data = search_news({"sources": {"$all": [regex]}})
+        formated_data = [(doc["title"], doc["url"]) for doc in data]
+    except KeyError:
+        return []
+    else:
+        return formated_data
 
 def search_by_category(category):
     """Seu código deve vir aqui"""
