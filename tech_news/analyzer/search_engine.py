@@ -1,14 +1,47 @@
+from tech_news.database import search_news
+import re
+import datetime
+
+
 def search_by_title(title):
-    """Seu código deve vir aqui"""
+    db_search = search_news(
+        {"title": {"$regex": re.compile(title, re.IGNORECASE)}}
+    )
+
+    data_list = [(data["title"], data["url"]) for data in db_search]
+
+    return data_list
 
 
 def search_by_date(date):
-    """Seu código deve vir aqui"""
+    try:
+        datetime.datetime.strptime(date, "%Y-%m-%d")
+    except ValueError:
+        raise ValueError("Data inválida")
+    else:
+        db_search = search_news(
+            {"timestamp": {"$regex": re.compile(date)}}
+        )
+        data_list = [(data["title"], data["url"]) for data in db_search]
+
+        return data_list
 
 
 def search_by_source(source):
-    """Seu código deve vir aqui"""
+    db_search = search_news(
+        {"sources": {"$regex": re.compile(source, re.IGNORECASE)}}
+    )
+
+    data_list = [(data["title"], data["url"]) for data in db_search]
+
+    return data_list
 
 
 def search_by_category(category):
-    """Seu código deve vir aqui"""
+    db_search = search_news(
+        {"categories": {"$regex": re.compile(category, re.IGNORECASE)}}
+    )
+
+    data_list = [(data["title"], data["url"]) for data in db_search]
+
+    return data_list
