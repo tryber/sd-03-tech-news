@@ -25,12 +25,10 @@ def get_info(fetcher, url):
     data["title"] = selector.css(".tec--article__header__title::text").get()
     data["timestamp"] = selector.css("time::attr(datetime)").get()
     data["writer"] = selector.css(".tec--author__info__link::text").get()
-    shares_count = (
-        selector.css("tec--toolbar__item::text").re_first(r"\d+") or 0
-    )
-    data["shares-count"] = int(shares_count)
-    comments_count = selector.css("button::attr(data-count)").get() or 0
-    data["comments_count"] = int(comments_count)
+    shares_count = selector.css("tec--toolbar__item::text").get()
+    data["shares_count"] = int(shares_count or "0")
+    comments_count = selector.css("button::attr(data-count)").get()
+    data["comments_count"] = int(comments_count or "0")
     data["summary"] = selector.css(".tec--article__body > p::text").get()
     data["sources"] = selector.css(".z--mb-16 div a::text").getall()
     data["categories"] = selector.css(
