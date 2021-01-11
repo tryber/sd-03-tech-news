@@ -31,6 +31,6 @@ def top_5_categories():
         ]
     )
 
-    data_list = [(data["title"], data["url"]) for data in top_categories]
+    data_list = [category["_id"] for category in top_categories]
 
     return data_list
