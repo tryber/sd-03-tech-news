@@ -30,8 +30,22 @@ def search_by_date(date):
 
 
 def search_by_source(source):
-    """Seu código deve vir aqui"""
+    db_search = search_news(
+        {"title": {"$regex": re.compile(source, re.IGNORECASE)}},
+        {"title": True, "url": True, "_id": False},
+    )
+
+    data_list = [(data["title"], data["url"]) for data in db_search]
+
+    return data_list
 
 
 def search_by_category(category):
-    """Seu código deve vir aqui"""
+    db_search = search_news(
+        {"title": {"$regex": re.compile(category, re.IGNORECASE)}},
+        {"title": True, "url": True, "_id": False},
+    )
+
+    data_list = [(data["title"], data["url"]) for data in db_search]
+
+    return data_list
