@@ -39,14 +39,12 @@ def new_scraper(url, fetcher):
 def scrape(fetcher, pages=1):
     data_list = []
     for i in range(1, pages + 1):
-        print(i)
         page = Selector(
             text=fetcher(f"https://www.tecmundo.com.br/novidades?page={i}")
         )
         urls = page.css(
             ".tec--list .tec--card__title__link::attr(href)"
         ).getall()
-        print(urls)
         for url in urls:
             data_list.append(new_scraper(url, fetcher))
     return data_list
