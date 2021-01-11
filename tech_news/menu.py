@@ -55,5 +55,61 @@ def collector_menu():
         return print("Opção inválida", file=sys.stderr)
 
 
+def choice_1():
+    title = input("Digite o título: ")
+    return search_by_title(title)
+
+
+def choice_2():
+    date = input("Digite a data no formato aaaa-mm-dd: ")
+    return search_by_date(date)
+
+
+def choice_3():
+    source = input("Digite a fonte: ")
+    return search_by_source(source)
+
+
+def choice_4():
+    category = input("Digite a categoria: ")
+    return search_by_category(category)
+
+
+def choice_5():
+    return top_5_news()
+
+
+def choice_6():
+    return top_5_categories()
+
+
+def choice_7():
+    return print("Encerrando script")
+
+
 def analyzer_menu():
-    """Seu código deve vir aqui"""
+    generate_menu = input(
+        "Selecione uma das opções a seguir:\n "
+        + "1 - Buscar notícias por título;\n "
+        + "2 - Buscar notícias por data;\n "
+        + "3 - Buscar notícias por fonte;\n "
+        + "4 - Buscar notícias por categoria;\n "
+        + "5 - Listar top 5 notícias;\n "
+        + "6 - Listar top 5 categorias;\n "
+        + "7 - Sair.\n "
+    )
+
+    menu_options = {
+        "1": choice_1,
+        "2": choice_2,
+        "3": choice_3,
+        "4": choice_4,
+        "5": choice_5,
+        "6": choice_6,
+        "7": choice_7,
+    }
+
+    try:
+        return menu_options[generate_menu]()
+    except KeyError:
+        return print("Opção inválida", file=sys.stderr)
