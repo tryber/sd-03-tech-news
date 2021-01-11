@@ -24,7 +24,7 @@ def get_info(fetcher, url):
     data["url"] = url
     data["title"] = selector.css(".tec--article__header__title::text").get()
     data["timestamp"] = selector.css("time::attr(datetime)").get()
-    data["writer"] = (selector.css(".tec--author__info__link::text").get(),)
+    data["writer"] = (selector.css(".tec--author__info__link::text").get())
     shares_count = (
         selector.css("tec--toolbar__item::text").re_first(r"\d+") or "0"
     )
