@@ -29,7 +29,7 @@ def search_by_date(date):
 
 def search_by_source(source):
     db_search = search_news(
-        {"title": {"$regex": re.compile(source, re.IGNORECASE)}}
+        {"sources": {"$regex": re.compile(source, re.IGNORECASE)}}
     )
 
     data_list = [(data["title"], data["url"]) for data in db_search]
@@ -39,7 +39,7 @@ def search_by_source(source):
 
 def search_by_category(category):
     db_search = search_news(
-        {"title": {"$regex": re.compile(category, re.IGNORECASE)}}
+        {"categories": {"$regex": re.compile(category, re.IGNORECASE)}}
     )
 
     data_list = [(data["title"], data["url"]) for data in db_search]
