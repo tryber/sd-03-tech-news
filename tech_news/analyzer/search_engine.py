@@ -5,8 +5,7 @@ import datetime
 
 def search_by_title(title):
     db_search = search_news(
-        {"title": {"$regex": re.compile(title, re.IGNORECASE)}},
-        {"title": True, "url": True, "_id": False},
+        {"title": {"$regex": re.compile(title, re.IGNORECASE)}}
     )
 
     data_list = [(data["title"], data["url"]) for data in db_search]
@@ -21,8 +20,7 @@ def search_by_date(date):
         raise ValueError("Data inválida")
     else:
         db_search = search_news(
-            {"timestamp": {"$regex": re.compile(date)}},
-            {"title": True, "url": True, "_id": False},
+            {"timestamp": {"$regex": re.compile(date)}}
         )
         data_list = [(data["title"], data["url"]) for data in db_search]
 
@@ -31,8 +29,7 @@ def search_by_date(date):
 
 def search_by_source(source):
     db_search = search_news(
-        {"title": {"$regex": re.compile(source, re.IGNORECASE)}},
-        {"title": True, "url": True, "_id": False},
+        {"title": {"$regex": re.compile(source, re.IGNORECASE)}}
     )
 
     data_list = [(data["title"], data["url"]) for data in db_search]
@@ -42,8 +39,7 @@ def search_by_source(source):
 
 def search_by_category(category):
     db_search = search_news(
-        {"title": {"$regex": re.compile(category, re.IGNORECASE)}},
-        {"title": True, "url": True, "_id": False},
+        {"title": {"$regex": re.compile(category, re.IGNORECASE)}}
     )
 
     data_list = [(data["title"], data["url"]) for data in db_search]
