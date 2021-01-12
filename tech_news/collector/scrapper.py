@@ -51,6 +51,6 @@ def scrape(fetcher=fetch_content, pages=1):
         ).getall():
             response_new = fetcher(new)
             selector_new = Selector(text=response_new)
-            new_obj = format_new_object(new, selector_new)
+            new_obj = format_content(new, selector_new)
             scraplist.append(new_obj)
     return scraplist
