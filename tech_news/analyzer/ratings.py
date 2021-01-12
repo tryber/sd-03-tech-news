@@ -30,4 +30,3 @@ def top_5_categories():
     ]
 
     return top_categories
-    
