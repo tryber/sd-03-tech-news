@@ -28,7 +28,8 @@ def get_information(url):
     shares = (selector.css('.tec--toolbar__item::text')
               .re_first(r'\d*') or "0")
     info['shares_count'] = int(shares)
-    info['comments_count'] = (selector.css('#js-comments-btn::attr(data-count)')
+    info['comments_count'] = (selector
+                              .css('#js-comments-btn::attr(data-count)')
                               .get())
     summaryArray = (selector.css('.tec--article__body  p:nth-child(1) *::text')
                     .getall())
