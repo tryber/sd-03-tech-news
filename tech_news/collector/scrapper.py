@@ -1,8 +1,6 @@
 import requests
-from time import sleep
 from parsel import Selector
-
-BASE_URL = "https://www.tecmundo.com.br/novidades"
+from time import sleep
 
 
 def fetch_content(url, timeout=3, delay=0.5):
@@ -10,40 +8,59 @@ def fetch_content(url, timeout=3, delay=0.5):
     try:
         response = requests.get(url, timeout=timeout)
         response.raise_for_status()
+    except (requests.exceptions.HTTPError, requests.exceptions.ReadTimeout):
+        return ""
+    else:
         return response.text
 
-    except (requests.ReadTimeout, requests.HTTPError):
-        return ""
+
+def get_data(fetcher, link):
+    selector = Selector(text=fetcher(link))
+    data = {}
+    data['url'] = link
+    data['title'] = selector.css(
+                    ".tec--article__header__title::text"
+                ).get()
+    data["timestamp"] = selector.css(
+                    "#js-article-date::attr(datetime)"
+                ).get()
+    data["writer"] = selector.css(
+                    ".tec--author__info__link::text"
+                ).get()
+    data["shares_count"] = int(selector.css(
+                    ".tec--toolbar__item::text"
+                ).re_first(r"\d"))
+    data["comments_count"] = int(selector.css(
+                    "#js-comments-btn::attr(data-count)"
+                ).get())
+    data["summary"] = selector.css(
+                    ".tec--article__body p *::text"
+                ).get()
+    data["sources"] = selector.css(
+                    ".z--mb-16 .tec--badge::text"
+                ).getall()
+    data["categories"] = selector.css(
+                    "#js-categories .tec--badge::text"
+                ).getall()
+
+    return data
 
 
-def get_information(url):
-    info = {}
-    data = fetch_content(url)
-    selector = Selector(text=data)
-    info['url'] = url
-    info['title'] = selector.css('.tec--article__header__title::text').get()
-    info['timestamp'] = (selector.css('.tec--timestamp__item strong::text')
-                         .get())
-    info['writer'] = selector.css('.tec--author__info__link::text').get()
-    shares = (selector.css('.tec--toolbar__item::text')
-              .re_first(r'\d*') or "0")
-    info['shares_count'] = int(shares)
-    info['comments_count'] = (selector
-                              .css('#js-comments-btn::attr(data-count)')
-                              .get())
-    summaryArray = (selector.css('.tec--article__body  p:nth-child(1) *::text')
-                    .getall())
-    info['summary'] = ''.join(summaryArray)
-    info['sources'] = selector.css('.tec--badge::text').get()
-    info['categories'] = selector.css('.tec--badge--primary::text').getall()
-
-    return info
+def get_links(selector):
+    return selector.css(
+            ".tec--list__item .tec--card__title__link::attr(href)"
+        ).getall()
 
 
 def scrape(fetcher, pages=1):
-    content = fetcher(url=BASE_URL)
-    selector = Selector(text=content)
-    links = selector.css('.tec--card__title__link::attr(href)').getall()
-
-    infos = map(get_information, links)
-    return list(infos)
+    page_list = []
+    BASE_URL = 'https://www.tecmundo.com.br/novidades'
+    for page in range(pages):
+        response = fetcher(
+            f"{BASE_URL}?page={page}"
+        )
+        selector = Selector(text=response)
+        links = get_links(selector)
+        for link in links:
+            page_list.append(get_data(fetcher=fetcher, link=link))
+    return page_list
