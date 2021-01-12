@@ -10,7 +10,7 @@ def fetch_content(url, timeout=3, delay=0.5):
     except (requests.exceptions.HTTPError, requests.exceptions.ReadTimeout):
         return ""
     else:
-        return response.text    
+        return response.text
 
 
 def format_content(url, selector):
