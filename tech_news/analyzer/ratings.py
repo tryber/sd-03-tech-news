@@ -18,13 +18,16 @@ def top_5_news():
 
 
 def top_5_categories():
-    topcategories = []
     categories = search_news_aggregate([
         {"$unwind": "$categories"},
         {"$group": {"_id": "$categories", "count": {"$sum": 1}}},
         {"$sort": {"count": -1, "_id": 1}},
         {"$limit": 5},
     ])
-    for news in categories:
-        topcategories.append((news["_id"]))
-    return topcategories
+
+    top_categories = [
+        category["_id"] for category in categories
+    ]
+
+    return top_categories
+    
