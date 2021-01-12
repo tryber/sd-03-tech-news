@@ -3,7 +3,7 @@ from os import path
 
 
 def csv_importer(filepath):
-    response = []
+    result = []
     if not filepath.endswith('.csv'):
         raise ValueError('Formato invalido')
     if not path.exists(filepath):
@@ -17,4 +17,4 @@ def csv_importer(filepath):
             for i in range(len(header)):
                 new_item[header[i]] = item[i]
             response.append(new_item)
-    return response
+    return result
