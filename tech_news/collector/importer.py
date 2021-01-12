@@ -16,5 +16,5 @@ def csv_importer(filepath):
             new_item = {}
             for i in range(len(header)):
                 new_item[header[i]] = item[i]
-            response.append(new_item)
+            result.append(new_item)
     return result
