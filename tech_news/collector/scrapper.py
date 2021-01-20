@@ -27,8 +27,6 @@ def scrape(fetcher, pages=1):
         for news in selector.css(
                 ".tec--list__item .tec--card__info a::attr(href)").getall():
             news_selector = Selector(text=fetcher(news))
-            # clean_data = counts_cleaner(
-            #     news_selector.css(".tec--toolbar__item ::text").getall())
             all_news.append({
                 "url": news,
                 "title": news_selector
@@ -37,8 +35,10 @@ def scrape(fetcher, pages=1):
                     .css(".tec--timestamp__item time::attr(datetime)").get(),
                 "writer": news_selector
                     .css(".tec--author__info__link::text").get(),
-                "shares_count": 0,
-                "comments_count": 0,
+                "shares_count": int(news_selector.css(
+                    ".tec--toolbar__item::text").re_first(r"\d+")),
+                "comments_count": int(news_selector.css(
+                    "#js-comments-btn::text").re_first(r"\d+")),
                 "summary": news_selector.css(
                     ".tec--article__body *::text").get(),
                 "sources": news_selector.css(

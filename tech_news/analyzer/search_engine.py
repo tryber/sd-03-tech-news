@@ -1,6 +1,6 @@
 import re
 import datetime
-from tech_news.database import search_news
+from database import search_news
 
 
 def search_by_title(title):
