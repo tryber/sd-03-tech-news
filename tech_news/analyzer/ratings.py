@@ -1,5 +1,5 @@
-from database import search_news
-from database import db
+from tech_news.database import search_news
+from tech_news.database import db
 
 
 def top_5_news():

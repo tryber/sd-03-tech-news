@@ -1,5 +1,5 @@
 import csv
-from database import find_news
+from tech_news.database import find_news
 
 
 def exporter_support(data, file):
